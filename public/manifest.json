@@ -1,0 +1,16 @@
+{
+    "name": "نظارت قیمت طلا",
+    "short_name": "Gold Monitor",
+    "description": "نظارت قیمت طلا با هشدار، ماشین حساب و نسخه دسکتاپ Electron.",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#d4a54a",
+    "icons": [
+        {
+            "src": "/icon.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}
