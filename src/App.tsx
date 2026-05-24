@@ -26,7 +26,7 @@ function App() {
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [priceHistory, setPriceHistory] = useState<number[]>([]);
   const [alertPrice, setAlertPrice] = useState<number | null>(null);
   const [notificationPermission, setNotificationPermission] =
