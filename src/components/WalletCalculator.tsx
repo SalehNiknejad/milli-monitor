@@ -45,6 +45,14 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   const commissionCost = includeCommission
     ? totalCost * (COMMISSION_PERCENT / 100)
     : 0;
+  const forecastAmountNum = parseFloat(forecastAmount) || 0;
+  const growthNum = parseFloat(growthPercent) || 0;
+  const forecastMonthsNum = parseInt(forecastMonths, 10) || 12;
+  const projectedValue = forecastAmountNum * (1 + growthNum / 100);
+  const projectedProfit = projectedValue - forecastAmountNum;
+  const monthlyProfit =
+    forecastMonthsNum > 0 ? projectedProfit / forecastMonthsNum : 0;
+  const forecastGrams = forecastAmountNum / price;
 
   // Persist wallet inputs
   useEffect(() => {
