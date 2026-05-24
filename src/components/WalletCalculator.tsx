@@ -23,6 +23,9 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
       return true;
     }
   });
+  const [forecastAmount, setForecastAmount] = useState<string>("50000000");
+  const [growthPercent, setGrowthPercent] = useState<string>("10");
+  const [forecastMonths, setForecastMonths] = useState<string>("12");
 
   const COMMISSION_PERCENT = 0.5;
 
