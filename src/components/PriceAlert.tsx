@@ -62,7 +62,7 @@ export default function PriceAlert({
               هشدار فعال:
             </p>
             <p className="text-2xl font-bold text-gold-600 dark:text-gold-400">
-              {alertPrice.toLocaleString("fa-IR")} ریال
+              {alertPrice.toLocaleString("fa-IR")} تومان
             </p>
             <button
               onClick={handleClearAlert}
