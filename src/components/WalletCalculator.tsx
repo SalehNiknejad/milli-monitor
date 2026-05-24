@@ -75,7 +75,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
       <div className="flex items-center gap-2 mb-6">
         <Wallet size={24} className="text-gold-500" />
         <h3 className="text-xl font-bold dark:text-white">
-          💼 ماشین حساب کیف پول
+          ماشین حساب کیف پول
         </h3>
       </div>
 

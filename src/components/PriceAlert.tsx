@@ -41,7 +41,7 @@ export default function PriceAlert({
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect">
       <div className="flex items-center gap-2 mb-6">
         <Bell size={24} className="text-gold-500" />
-        <h3 className="text-xl font-bold dark:text-white">🔔 هشدار قیمت</h3>
+        <h3 className="text-xl font-bold dark:text-white"> هشدار قیمت</h3>
       </div>
 
       <div className="space-y-4">

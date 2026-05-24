@@ -93,7 +93,7 @@ export default function ProfitCalculator({
       <div className="flex items-center gap-2 mb-6">
         <TrendingUp size={24} className="text-gold-500" />
         <h3 className="text-xl font-bold dark:text-white">
-          🪙 محاسبه‌گر سود خریدهای قبلی
+          محاسبه‌گر سود خریدهای قبلی
         </h3>
       </div>
 
