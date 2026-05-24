@@ -155,6 +155,88 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 {(totalCost - commissionCost).toLocaleString("fa-IR")} تومان
               </span>
             </div>
+            <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 mt-4 space-y-4">
+              <h4 className="text-base font-semibold text-gray-900 dark:text-white">
+                🧮 شبیه‌ساز سرمایه‌گذاری حرفه‌ای
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  سرمایه (تومان)
+                  <input
+                    type="number"
+                    value={forecastAmount}
+                    onChange={(e) => setForecastAmount(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  />
+                </label>
+                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  رشد پیش‌بینی شده (%)
+                  <input
+                    type="number"
+                    value={growthPercent}
+                    onChange={(e) => setGrowthPercent(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  />
+                </label>
+                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  مدت (ماه)
+                  <input
+                    type="number"
+                    value={forecastMonths}
+                    onChange={(e) => setForecastMonths(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
+                  />
+                </label>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <button
+                  onClick={() => setForecastAmount("50000000")}
+                  className="w-full px-3 py-2 rounded-lg bg-gold-500 hover:bg-gold-600 text-white text-sm font-medium transition-colors"
+                >
+                  سناریو ۵۰ میلیون
+                </button>
+                <button
+                  onClick={() => setGrowthPercent("10")}
+                  className="w-full px-3 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
+                >
+                  رشد ۱۰٪
+                </button>
+              </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    ارزش بعد از رشد
+                  </p>
+                  <p className="mt-2 font-semibold text-gray-900 dark:text-white">
+                    {projectedValue.toLocaleString("fa-IR")} تومان
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    سود کل
+                  </p>
+                  <p className="mt-2 font-semibold text-green-600 dark:text-green-400">
+                    {projectedProfit.toLocaleString("fa-IR")} تومان
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    سود ماهانه
+                  </p>
+                  <p className="mt-2 font-semibold text-purple-600 dark:text-purple-400">
+                    {monthlyProfit.toLocaleString("fa-IR")} تومان
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    میلی‌گرم قابل خرید
+                  </p>
+                  <p className="mt-2 font-semibold text-gold-600 dark:text-gold-400">
+                    {forecastGrams.toFixed(3)} میلی‌گرم
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
