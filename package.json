@@ -4,11 +4,14 @@
     "description": "Real-time gold price monitor with wallet calculator and alerts",
     "private": true,
     "type": "module",
+    "main": "electron/main.js",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "electron:dev": "concurrently \"npm:dev\" \"wait-on http://localhost:5173 && cross-env ELECTRON_START_URL=http://localhost:5173 electron .\"",
+        "electron:build": "npm run build && electron-builder"
     },
     "dependencies": {
         "react": "^18.2.0",
@@ -24,6 +27,8 @@
         "tailwindcss": "^3.3.0",
         "postcss": "^8.4.24",
         "autoprefixer": "^10.4.14",
+        "electron": "^28.2.0",
+        "electron-builder": "^24.6.0",
         "concurrently": "^8.2.0",
         "wait-on": "^7.0.1",
         "cross-env": "^7.0.3"
@@ -36,6 +41,7 @@
         },
         "files": [
             "dist/**",
+            "electron/main.js",
             "public/**"
         ],
         "win": {
