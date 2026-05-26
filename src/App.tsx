@@ -4,7 +4,11 @@ import PriceCard from "./components/PriceCard";
 import WalletCalculator from "./components/WalletCalculator";
 import PriceAlert from "./components/PriceAlert";
 import ProfitCalculator from "./components/ProfitCalculator";
-
+import { usePortfolioStore } from "./store/portfolioStore";
+import PortfolioSummary from "./components/PortfolioSummary";
+import TransactionImporter from "./components/TransactionImporter";
+import { rialToToman } from "./utils/currency";
+import TransactionsTable from "./components/TransactionsTable";
 interface PriceData {
   price18: number;
   date: string;
@@ -22,6 +26,12 @@ const API_URL = true
   : "https://milli.gold/api/v1/public/milli-price/detail";
 
 function App() {
+  const fetchPortfolio = usePortfolioStore((state) => state.fetchPortfolio);
+
+  useEffect(() => {
+    fetchPortfolio();
+  }, []);
+
   const [price, setPrice] = useState<PriceData | null>(null);
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -183,7 +193,7 @@ function App() {
 
     // initial fetch + interval
     fetchPrice();
-    const interval = setInterval(fetchPrice, 10000);
+    const interval = setInterval(fetchPrice, 60000);
 
     return () => {
       clearInterval(interval);
@@ -211,10 +221,8 @@ function App() {
       : "0";
   const isIncreasing = priceChange > 0;
   const isDecreasing = priceChange < 0;
-
-  // Display values in تومان (1 تومان = 10 ریال)
-  const displayPrice = price ? Math.round(price.price18 / 10) : 0;
-  const displayChange = Math.round(priceChange / 10);
+  const displayPrice = price ? rialToToman(price.price18) : 0;
+  const displayChange = rialToToman(priceChange);
 
   return (
     <div
@@ -263,6 +271,7 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
+          {price && <PortfolioSummary currentPriceRial={price.price18} />}
           {installStatus || deferredPrompt ? (
             <div className="rounded-2xl border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/30 p-4 text-sm text-blue-900 dark:text-blue-200">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -354,6 +363,8 @@ function App() {
 
           {/* Profit Calculator */}
           {price && <ProfitCalculator currentPrice={displayPrice} />}
+          <TransactionImporter />
+          <TransactionsTable />
         </div>
       </main>
 

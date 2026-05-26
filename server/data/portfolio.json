@@ -1,0 +1,413 @@
+{
+  "walletBalance": 0,
+  "goldBalance": 0,
+  "transactions": [
+    {
+      "id": "e5b751f6-5477-47eb-a4d8-478028ed7d64",
+      "type": "sell",
+      "amount": 2947,
+      "price": 182830,
+      "total": 541359630,
+      "fee": {
+        "rial": 0,
+        "milli": 14
+      },
+      "createdAt": "2026-05-24T04:15:00.000Z",
+      "walletAfter": 538995920,
+      "milliBalance": 0
+    },
+    {
+      "id": "4b78578d-d8f4-468a-b131-4a0853d175fb",
+      "type": "gift",
+      "amount": 9,
+      "price": 189680,
+      "total": 1707120,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-05-22T20:22:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "a2b27790-b825-4c32-bb5b-83587c20ad01",
+      "type": "buy",
+      "amount": 2284,
+      "price": 195910,
+      "total": 449613450,
+      "fee": {
+        "rial": 2155010,
+        "milli": 0
+      },
+      "createdAt": "2026-05-14T14:18:00.000Z",
+      "walletAfter": 195910,
+      "milliBalance": 2952
+    },
+    {
+      "id": "380f0a47-6b8b-42f2-b5da-4bfe007f4819",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 449686890,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-05-14T14:18:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "cd6aad9c-6f0f-496c-b4d6-b6efa341755d",
+      "type": "buy",
+      "amount": 153,
+      "price": 195250,
+      "total": 30068500,
+      "fee": {
+        "rial": 195250,
+        "milli": 0
+      },
+      "createdAt": "2026-05-12T17:12:00.000Z",
+      "walletAfter": 122470,
+      "milliBalance": 668
+    },
+    {
+      "id": "22b09bd4-e3e2-4fb1-99a3-6e288b55c1ae",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 30000000,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-05-12T17:12:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "33fabc1e-ba21-4ce9-9c3e-0f3545c4d95b",
+      "type": "buy",
+      "amount": 207,
+      "price": 190970,
+      "total": 39721760,
+      "fee": {
+        "rial": 190970,
+        "milli": 0
+      },
+      "createdAt": "2026-05-06T03:23:00.000Z",
+      "walletAfter": 190970,
+      "milliBalance": 515
+    },
+    {
+      "id": "349c4b8a-0b69-4a3a-8559-dc29e15d1826",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 39686510,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-05-06T03:23:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "d63913ed-c336-4431-a0dc-a890fad06a95",
+      "type": "buy",
+      "amount": 308,
+      "price": 205270,
+      "total": 63428430,
+      "fee": {
+        "rial": 205270,
+        "milli": 0
+      },
+      "createdAt": "2026-05-04T10:12:00.000Z",
+      "walletAfter": 226220,
+      "milliBalance": 308
+    },
+    {
+      "id": "35fffa52-58a2-4bc4-aea3-05beef8958e3",
+      "type": "sell",
+      "amount": 315,
+      "price": 201830,
+      "total": 63778280,
+      "fee": {
+        "rial": 0,
+        "milli": 1
+      },
+      "createdAt": "2026-05-03T08:06:00.000Z",
+      "walletAfter": 63654650,
+      "milliBalance": 0
+    },
+    {
+      "id": "ee746980-ab56-4955-b038-afc3f5d3c31d",
+      "type": "gift",
+      "amount": 0,
+      "price": 194100,
+      "total": 8734500,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-05-01T08:17:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 316
+    },
+    {
+      "id": "acf20ade-99f9-42e9-a164-27f857aa5ff6",
+      "type": "gift",
+      "amount": 0,
+      "price": 195640,
+      "total": 7043040,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-04-30T14:25:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 271
+    },
+    {
+      "id": "fd8ecccb-f777-4900-aa72-641de59943b4",
+      "type": "buy",
+      "amount": 235,
+      "price": 169880,
+      "total": 39921800,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-04-21T10:11:00.000Z",
+      "walletAfter": 78200,
+      "milliBalance": 235
+    },
+    {
+      "id": "b310e1f5-ddf9-4d26-83b3-db6d1a525284",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 40000000,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-04-21T10:11:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "0fbc0f7c-ffbc-46ca-965f-a3b8fc130381",
+      "type": "withdraw",
+      "amount": 0,
+      "price": 0,
+      "total": 0,
+      "fee": {
+        "rial": 20000,
+        "milli": 0
+      },
+      "createdAt": "2026-01-27T06:38:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "7223b82a-0bd1-479f-b95f-a6f67fd4da51",
+      "type": "sell",
+      "amount": 191,
+      "price": 163040,
+      "total": 31303680,
+      "fee": {
+        "rial": 0,
+        "milli": 1
+      },
+      "createdAt": "2026-01-23T09:09:00.000Z",
+      "walletAfter": 31140640,
+      "milliBalance": 0
+    },
+    {
+      "id": "730c6400-94dc-480c-b930-41cfec92b493",
+      "type": "buy",
+      "amount": 100,
+      "price": 156190,
+      "total": 15775190,
+      "fee": {
+        "rial": 156190,
+        "milli": 0
+      },
+      "createdAt": "2026-01-14T15:04:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 192
+    },
+    {
+      "id": "d9dd9a1c-8612-4346-bacf-50c05776f893",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 15775190,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-01-14T15:04:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "34efc56c-26d8-493d-9a43-ebfc90e2c548",
+      "type": "buy",
+      "amount": 5,
+      "price": 156190,
+      "total": 937140,
+      "fee": {
+        "rial": 156190,
+        "milli": 0
+      },
+      "createdAt": "2026-01-14T15:02:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 92
+    },
+    {
+      "id": "f55d4fab-f81f-4e6b-ba18-cfd0b5c9e953",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 900660,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2026-01-14T15:02:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "c6a40233-b63e-4ed1-b474-9ef3e77a535c",
+      "type": "gift",
+      "amount": 7,
+      "price": 137190,
+      "total": 960330,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-19T11:19:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "860883ea-e1fc-42f5-b81f-f39c4d3f4342",
+      "type": "gift",
+      "amount": 7,
+      "price": 127500,
+      "total": 892500,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-08T21:08:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "dfa01421-d378-4b6a-ac90-fbd619c642a3",
+      "type": "gift",
+      "amount": 10,
+      "price": 126670,
+      "total": 1266700,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-07T18:29:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "b552902a-5e01-4bf2-b730-451fcd797907",
+      "type": "gift",
+      "amount": 10,
+      "price": 126630,
+      "total": 1266300,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-07T17:54:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "5aa0deb2-cfee-48a3-beee-790029f0af0e",
+      "type": "gift",
+      "amount": 10,
+      "price": 124350,
+      "total": 1243500,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-06T16:42:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "20738fa5-ea00-4174-8ae0-781983f31515",
+      "type": "gift",
+      "amount": 10,
+      "price": 124710,
+      "total": 1247100,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-06T15:27:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "df408b05-96a3-44b7-8eae-db0177145d41",
+      "type": "gift",
+      "amount": 10,
+      "price": 123540,
+      "total": 1235400,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-06T07:46:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    },
+    {
+      "id": "4e3e3d80-1297-4c5c-a6ef-5f67426a17ae",
+      "type": "buy",
+      "amount": 23,
+      "price": 123480,
+      "total": 2963520,
+      "fee": {
+        "rial": 123480,
+        "milli": 0
+      },
+      "createdAt": "2025-12-05T23:57:00.000Z",
+      "walletAfter": 36480,
+      "milliBalance": 23
+    },
+    {
+      "id": "dbe9d11a-8c2e-4601-9896-ddb1ad8a39d5",
+      "type": "deposit",
+      "amount": 0,
+      "price": 0,
+      "total": 3000000,
+      "fee": {
+        "rial": 0,
+        "milli": 0
+      },
+      "createdAt": "2025-12-05T23:55:00.000Z",
+      "walletAfter": 0,
+      "milliBalance": 0
+    }
+  ],
+  "snapshots": []
+}
