@@ -47,9 +47,10 @@ export default function PortfolioSummary({
     setEditingCard(null);
   };
 
-  // محاسبه ارزش دارایی
-  const assetValue = totalGold * currentPriceRial + walletBalance;
-  const goldAssetValue = totalGold * currentPriceRial;
+  // محاسبه ارزش دارایی در واحدهای درست
+  const goldAssetValueRial = totalGold * currentPriceRial;
+  const goldAssetValueToman = goldAssetValueRial / 10;
+  const totalAssetValueToman = goldAssetValueToman + walletBalance;
 
   const cards = [
     {
@@ -63,6 +64,7 @@ export default function PortfolioSummary({
       onSave: handleWalletSave,
       inputValue: walletInput,
       onInputChange: setWalletInput,
+      unit: "toman",
     },
     {
       title: "موجودی میلی",
@@ -75,24 +77,27 @@ export default function PortfolioSummary({
       onSave: handleGoldSave,
       inputValue: goldInput,
       onInputChange: setGoldInput,
+      unit: "unit",
     },
     {
       title: "ارزش طلا",
-      value: goldAssetValue,
+      value: goldAssetValueRial,
       icon: BarChart3,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
       editable: false,
       key: "goldAsset",
+      unit: "rial",
     },
     {
       title: "ارزش کل دارایی",
-      value: assetValue,
+      value: totalAssetValueToman,
       icon: TrendingUp,
       color: "text-green-500",
       bg: "bg-green-500/10",
       editable: false,
       key: "totalAsset",
+      unit: "toman",
     },
   ];
 
@@ -157,10 +162,10 @@ export default function PortfolioSummary({
               ) : (
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-bold dark:text-white">
-                    {card.title.includes("ارزش")
+                    {card.unit === "rial"
                       ? formatToman(card.value)
                       : card.value.toLocaleString("fa-IR")}
-                    {card.title.includes("میلی") ? " میلی" : " تومان"}
+                    {card.unit === "unit" ? " میلی" : " تومان"}
                   </h3>
 
                   <div className={`rounded-xl p-3 ${card.bg}`}>
