@@ -1,77 +1,98 @@
-import { Wallet, Coins, TrendingUp, BarChart3 } from "lucide-react";
-import { useMemo } from "react";
+import {
+  Wallet,
+  Coins,
+  TrendingUp,
+  BarChart3,
+  Edit2,
+  Check,
+  X,
+} from "lucide-react";
+import { useState } from "react";
 import { formatToman } from "../utils/currency";
-import { usePortfolioStore } from "../store/portfolioStore";
+
 interface Props {
   currentPriceRial: number;
+  walletBalance: number;
+  totalGold: number;
+  onWalletChange: (value: number) => void;
+  onGoldChange: (value: number) => void;
 }
 
-export default function PortfolioSummary({ currentPriceRial }: Props) {
-  const { walletBalance, transactions } = usePortfolioStore();
+export default function PortfolioSummary({
+  currentPriceRial,
+  walletBalance,
+  totalGold,
+  onWalletChange,
+  onGoldChange,
+}: Props) {
+  const [editingCard, setEditingCard] = useState<string | null>(null);
+  const [walletInput, setWalletInput] = useState(walletBalance.toString());
+  const [goldInput, setGoldInput] = useState(totalGold.toString());
 
-  const stats = useMemo(() => {
-    let totalGold = 0;
-    let totalBuyCost = 0;
+  const handleWalletSave = () => {
+    const value = parseFloat(walletInput) || 0;
+    onWalletChange(value);
+    setEditingCard(null);
+  };
 
-    transactions.forEach((transaction) => {
-      if (transaction.type === "buy") {
-        totalGold += transaction.amount;
-        totalBuyCost += transaction.total || 0;
-      }
+  const handleGoldSave = () => {
+    const value = parseFloat(goldInput) || 0;
+    onGoldChange(value);
+    setEditingCard(null);
+  };
 
-      if (transaction.type === "sell") {
-        totalGold -= transaction.amount;
-      }
-      if (transaction.type === "gift") {
-        totalGold += transaction.amount;
-      }
-    });
+  const handleCancel = () => {
+    setWalletInput(walletBalance.toString());
+    setGoldInput(totalGold.toString());
+    setEditingCard(null);
+  };
 
-    const portfolioValue = totalGold * currentPriceRial;
-    const avgBuyPrice = totalGold > 0 ? totalBuyCost / totalGold : 0;
-
-    const totalProfit = portfolioValue - totalBuyCost;
-
-    const roi =
-      totalBuyCost > 0 ? ((totalProfit / totalBuyCost) * 100).toFixed(2) : "0";
-
-    return {
-      totalGold,
-      portfolioValue,
-      avgBuyPrice,
-      totalProfit,
-      roi,
-    };
-  }, [transactions, currentPriceRial]);
+  // محاسبه ارزش دارایی
+  const assetValue = totalGold * currentPriceRial + walletBalance;
+  const goldAssetValue = totalGold * currentPriceRial;
 
   const cards = [
     {
       title: "موجودی کیف پول",
-      value: `${formatToman(walletBalance)} تومان`,
+      value: walletBalance,
       icon: Wallet,
       color: "text-blue-500",
       bg: "bg-blue-500/10",
+      editable: true,
+      key: "wallet",
+      onSave: handleWalletSave,
+      inputValue: walletInput,
+      onInputChange: setWalletInput,
     },
     {
       title: "موجودی میلی",
-      value: `${stats.totalGold.toLocaleString("fa-IR")} میلی`,
+      value: totalGold,
       icon: Coins,
       color: "text-gold-500",
       bg: "bg-yellow-500/10",
+      editable: true,
+      key: "gold",
+      onSave: handleGoldSave,
+      inputValue: goldInput,
+      onInputChange: setGoldInput,
     },
     {
-      title: "ارزش دارایی",
-      value: `${formatToman(stats.portfolioValue)} تومان`,
+      title: "ارزش طلا",
+      value: goldAssetValue,
       icon: BarChart3,
       color: "text-purple-500",
       bg: "bg-purple-500/10",
+      editable: false,
+      key: "goldAsset",
     },
     {
-      title: "سود / ضرر",
-      value: `${formatToman(stats.totalProfit)} تومان`,
+      title: "ارزش کل دارایی",
+      value: assetValue,
       icon: TrendingUp,
-      color: stats.totalProfit >= 0 ? "text-green-500" : "text-red-500",
-      bg: stats.totalProfit >= 0 ? "bg-green-500/10" : "bg-red-500/10",
+      color: "text-green-500",
+      bg: "bg-green-500/10",
+      editable: false,
+      key: "totalAsset",
     },
   ];
 
@@ -79,10 +100,11 @@ export default function PortfolioSummary({ currentPriceRial }: Props) {
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {cards.map((card) => {
         const Icon = card.icon;
+        const isEditing = editingCard === (card as any).key;
 
         return (
           <div
-            key={card.title}
+            key={(card as any).key}
             className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-lg"
           >
             <div
@@ -90,36 +112,61 @@ export default function PortfolioSummary({ currentPriceRial }: Props) {
             />
 
             <div className="relative z-10">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {card.title}
-                  </p>
-
-                  <h3 className="mt-3 text-xl font-bold dark:text-white">
-                    {card.value}
-                  </h3>
-                </div>
-
-                <div className={`rounded-xl p-3 ${card.bg}`}>
-                  <Icon className={card.color} size={26} />
-                </div>
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {card.title}
+                </p>
+                {card.editable && !isEditing && (
+                  <button
+                    onClick={() => setEditingCard((card as any).key)}
+                    className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors"
+                  >
+                    <Edit2 size={14} className="text-gray-400" />
+                  </button>
+                )}
               </div>
 
-              {card.title === "سود / ضرر" && (
-                <p
-                  className={`mt-3 text-sm font-medium ${
-                    stats.totalProfit >= 0 ? "text-green-500" : "text-red-500"
-                  }`}
-                >
-                  ROI: {stats.roi}%
-                </p>
-              )}
+              {isEditing ? (
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      value={(card as any).inputValue}
+                      onChange={(e) =>
+                        (card as any).onInputChange(e.target.value)
+                      }
+                      className="flex-1 px-2 py-1 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-900 dark:text-white"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={(card as any).onSave}
+                      className="flex-1 px-2 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded transition-colors flex items-center justify-center gap-1"
+                    >
+                      <Check size={14} /> ذخیره
+                    </button>
+                    <button
+                      onClick={handleCancel}
+                      className="px-2 py-1.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 text-xs rounded transition-colors flex items-center justify-center"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold dark:text-white">
+                    {card.title.includes("ارزش")
+                      ? formatToman(card.value)
+                      : card.value.toLocaleString("fa-IR")}
+                    {card.title.includes("میلی") ? " میلی" : " تومان"}
+                  </h3>
 
-              {card.title === "موجودی میلی" && (
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                  میانگین خرید: {formatToman(stats.avgBuyPrice)}
-                </p>
+                  <div className={`rounded-xl p-3 ${card.bg}`}>
+                    <Icon className={card.color} size={20} />
+                  </div>
+                </div>
               )}
             </div>
           </div>

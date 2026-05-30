@@ -13,11 +13,10 @@ import PriceCard from "./components/PriceCard";
 import WalletCalculator from "./components/WalletCalculator";
 import PriceAlert from "./components/PriceAlert";
 import ProfitCalculator from "./components/ProfitCalculator";
-import { usePortfolioStore } from "./store/portfolioStore";
 import PortfolioSummary from "./components/PortfolioSummary";
-import TransactionImporter from "./components/TransactionImporter";
 import { rialToToman } from "./utils/currency";
-import TransactionsTable from "./components/TransactionsTable";
+// import TransactionImporter from "./components/TransactionImporter";
+// import TransactionsTable from "./components/TransactionsTable";
 interface PriceData {
   price18: number;
   date: string;
@@ -35,12 +34,6 @@ const API_URL = true
   : "https://milli.gold/api/v1/public/milli-price/detail";
 
 function App() {
-  const fetchPortfolio = usePortfolioStore((state) => state.fetchPortfolio);
-
-  useEffect(() => {
-    fetchPortfolio();
-  }, []);
-
   const [price, setPrice] = useState<PriceData | null>(null);
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,6 +41,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [priceHistory, setPriceHistory] = useState<number[]>([]);
   const [alertPrice, setAlertPrice] = useState<number | null>(null);
+  const [walletBalance, setWalletBalance] = useState<number>(0);
+  const [totalGold, setTotalGold] = useState<number>(0);
   const [notificationPermission, setNotificationPermission] =
     useState<NotificationPermission>("default");
   const [deferredPrompt, setDeferredPrompt] =
@@ -67,7 +62,7 @@ function App() {
     }
   }, []);
 
-  // Load persisted settings (dark mode, alert price, price history)
+  // Load persisted settings (dark mode, alert price, price history, wallet and gold)
   useEffect(() => {
     try {
       const storedDark = localStorage.getItem("milli:darkMode");
@@ -78,6 +73,12 @@ function App() {
 
       const storedHistory = localStorage.getItem("milli:priceHistory");
       if (storedHistory) setPriceHistory(JSON.parse(storedHistory));
+
+      const storedWallet = localStorage.getItem("milli:walletBalance");
+      if (storedWallet !== null) setWalletBalance(Number(storedWallet));
+
+      const storedGold = localStorage.getItem("milli:totalGold");
+      if (storedGold !== null) setTotalGold(Number(storedGold));
     } catch (e) {
       // ignore parse errors
     }
@@ -102,6 +103,18 @@ function App() {
       localStorage.setItem("milli:priceHistory", JSON.stringify(priceHistory));
     } catch (e) {}
   }, [priceHistory]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("milli:walletBalance", String(walletBalance));
+    } catch (e) {}
+  }, [walletBalance]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("milli:totalGold", String(totalGold));
+    } catch (e) {}
+  }, [totalGold]);
 
   useEffect(() => {
     const handler = (event: Event) => {
@@ -280,7 +293,15 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {price && <PortfolioSummary currentPriceRial={price.price18} />}
+          {price && (
+            <PortfolioSummary
+              currentPriceRial={price.price18}
+              walletBalance={walletBalance}
+              totalGold={totalGold}
+              onWalletChange={setWalletBalance}
+              onGoldChange={setTotalGold}
+            />
+          )}
           <div className="relative overflow-hidden rounded-3xl border border-pink-200 bg-gradient-to-br from-pink-50 via-white to-rose-50 p-5 text-sm text-pink-900 shadow-lg dark:border-pink-800/50 dark:from-pink-950/50 dark:via-slate-900 dark:to-rose-950/50 dark:text-pink-100">
             <div className="absolute inset-0 overflow-hidden">
               <Heart
@@ -400,6 +421,8 @@ function App() {
               </div>
             </div>
           ) : null}
+          {/* Profit Calculator */}
+          <ProfitCalculator currentPrice={displayPrice} />
           {/* Tools Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Wallet Calculator */}
@@ -415,10 +438,9 @@ function App() {
               />
             )}
           </div>
-          {/* Profit Calculator */}
-          {price && <ProfitCalculator currentPrice={displayPrice} />}
-          <TransactionsTable />
-          <TransactionImporter />
+
+          {/* <TransactionsTable />
+          <TransactionImporter /> */}
         </div>
       </main>
 

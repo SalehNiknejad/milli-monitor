@@ -15,7 +15,7 @@ export default function TransactionImporter() {
       if (!matches) {
         throw new Error("No JSON found");
       }
-
+      console.log(matches);
       const transactions = matches.map((m) =>
         parseApiTransaction(JSON.parse(m)),
       );
