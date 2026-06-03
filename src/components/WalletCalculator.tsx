@@ -1,6 +1,6 @@
 // Wallet calculator component (edited to force HMR rebuild)
 import { useEffect, useState } from "react";
-import { Wallet, Calculator } from "lucide-react";
+import { Wallet } from "lucide-react";
 
 interface WalletCalculatorProps {
   price: number;
@@ -52,7 +52,6 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   const targetPriceDiff = price > 0 ? targetPriceNum - price : 0;
   const targetPricePercent = price > 0 ? (targetPriceDiff / price) * 100 : 0;
 
-  // Persist wallet inputs
   useEffect(() => {
     try {
       localStorage.setItem("milli:wallet_balance", balance);
@@ -84,7 +83,6 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
       </div>
 
       <div className="space-y-4">
-        {/* Balance Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             موجودی کیف پول (تومان)
@@ -98,7 +96,6 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
           />
         </div>
 
-        {/* Commission Toggle */}
         <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
           <input
             type="checkbox"
@@ -115,10 +112,8 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
           </label>
         </div>
 
-        {/* Results */}
         {balance && parseFloat(balance) > 0 && (
           <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-            {/* Gold Amount */}
             <div className="flex justify-between items-center p-3 bg-gold-50 dark:bg-gold-900/20 rounded-lg">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 مقدار طلا قابل خریدن:
@@ -128,17 +123,15 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
               </span>
             </div>
 
-            {/* Total Cost */}
             <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 هزینه کل:
               </span>
               <span className="text-lg font-bold text-gray-900 dark:text-white">
-                {Math.round(totalCost).toLocaleString("fa-IR")} تومان{" "}
+                {Math.round(totalCost).toLocaleString("fa-IR")} تومان
               </span>
             </div>
 
-            {/* Commission */}
             {includeCommission && (
               <div className="flex justify-between items-center p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -150,7 +143,6 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
               </div>
             )}
 
-            {/* Net Amount */}
             <div className="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 مبلغ خالص:
@@ -160,6 +152,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 تومان
               </span>
             </div>
+
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 mt-4 space-y-4">
               <div className="flex items-start justify-between gap-3">
                 <div>
