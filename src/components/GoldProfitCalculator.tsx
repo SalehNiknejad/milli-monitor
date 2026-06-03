@@ -1,3 +1,4 @@
+import { CandlestickChart } from "lucide-react";
 import { useEffect, useState } from "react";
 
 interface GoldProfitCalculatorProps {
@@ -46,9 +47,12 @@ export default function GoldProfitCalculator({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect mt-4 space-y-4">
       <div>
-        <h4 className="text-xl font-bold dark:text-white">
-          محاسبه سود خرید و فروش طلا
-        </h4>
+        <div className="flex items-center gap-2 mb-2">
+          <CandlestickChart size={24} className="text-gold-500" />
+          <h4 className="text-xl font-bold dark:text-white">
+            محاسبه سود خرید و فروش طلا
+          </h4>
+        </div>
         <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
           در حالت سرمایه، مبلغ واردشده به‌عنوان پول واقعی سرمایه‌گذاری‌شده در
           نظر گرفته می‌شود و کارمزد خرید داخل آن لحاظ می‌شود.

@@ -104,7 +104,7 @@ function App() {
       if (alertPrice === null) localStorage.removeItem("milli:alertPrice");
       else localStorage.setItem("milli:alertPrice", String(alertPrice));
     } catch (e) {}
-  }, [alertPrice]);
+  }, [alertPrice, alertPrice, alertDirection, notificationPermission]);
 
   useEffect(() => {
     try {
@@ -177,7 +177,6 @@ function App() {
         }
 
         const data = await response.json();
-
         if (data.code === 0 && data.data) {
           const newPrice = data.data.price18;
 
@@ -199,21 +198,19 @@ function App() {
           setPriceHistory((prev) => [...prev.slice(-59), newPrice]);
           lastPriceRef.current = newPrice;
 
-          // Check if alert should be triggered using toman values.
-          if (alertPrice !== null && last !== null) {
-            const alertThresholdRial = alertPrice * 10;
-            const crossedAbove =
-              last < alertThresholdRial && newPrice >= alertThresholdRial;
-            const crossedBelow =
-              last > alertThresholdRial && newPrice <= alertThresholdRial;
+          // Simple threshold check on each fetched price.
+          if (alertPrice !== null) {
+            const currentToman = rialToToman(newPrice);
 
-            if (
-              (alertDirection === "above" && crossedAbove) ||
-              (alertDirection === "below" && crossedBelow)
-            ) {
+            const isAboveThreshold =
+              alertDirection === "above" && currentToman >= alertPrice;
+            const isBelowThreshold =
+              alertDirection === "below" && currentToman <= alertPrice;
+
+            if (isAboveThreshold || isBelowThreshold) {
               showNotification(
                 "هشدار قیمت طلا",
-                `قیمت طلا ${alertDirection === "above" ? "از" : "تا"} ${alertPrice.toLocaleString("fa-IR")} تومان ${alertDirection === "above" ? "بالا رفت" : "پایین آمد"}.`,
+                `قیمت فعلی ${currentToman.toLocaleString("fa-IR")} تومان ${alertDirection === "above" ? "بالای" : "پایین‌تر از"} ${alertPrice.toLocaleString("fa-IR")} تومان رسید.`,
                 "🔔",
               );
             }
@@ -241,17 +238,25 @@ function App() {
       clearInterval(interval);
       controller?.abort();
     };
-  }, [alertPrice]);
+  }, [alertPrice, alertDirection, notificationPermission]);
 
   // Show Windows notification
   const showNotification = (title: string, body: string, emoji?: string) => {
-    if (notificationPermission === "granted") {
+    if (
+      typeof Notification !== "undefined" &&
+      notificationPermission === "granted"
+    ) {
       new Notification(emoji ? `${emoji} ${title}` : title, {
         body,
         icon: "💛",
         badge: "💛",
-        tag: "goldprice",
+        tag: Date.now().toString(),
       });
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      window.alert(`${emoji ? `${emoji} ` : ""}${title}\n${body}`);
     }
   };
 
@@ -285,6 +290,7 @@ function App() {
                 </p>
               </div>
             </div>
+
             <div className="flex items-center gap-2">
               {deferredPrompt ? (
                 <button
@@ -472,7 +478,7 @@ function App() {
       {/* Footer */}
       <footer className="border-t border-gray-200 dark:border-gray-700 mt-12 py-6 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>🔄 بروزرسانی خودکار هر 30 ثانیه | منبع: Milli.Gold API</p>
+          <p> Milli.Gold API | </p>
         </div>
       </footer>
     </div>
