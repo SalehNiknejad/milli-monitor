@@ -23,9 +23,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
       return true;
     }
   });
-  const [forecastAmount, setForecastAmount] = useState<string>("50000000");
-  const [growthPercent, setGrowthPercent] = useState<string>("10");
-  const [forecastMonths, setForecastMonths] = useState<string>("12");
+  const [targetPrice, setTargetPrice] = useState<string>("0");
 
   const COMMISSION_PERCENT = 0.5;
 
@@ -45,14 +43,14 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   const commissionCost = includeCommission
     ? totalCost * (COMMISSION_PERCENT / 100)
     : 0;
-  const forecastAmountNum = parseFloat(forecastAmount) || 0;
-  const growthNum = parseFloat(growthPercent) || 0;
-  const forecastMonthsNum = parseInt(forecastMonths, 10) || 12;
-  const projectedValue = forecastAmountNum * (1 + growthNum / 100);
-  const projectedProfit = projectedValue - forecastAmountNum;
-  const monthlyProfit =
-    forecastMonthsNum > 0 ? projectedProfit / forecastMonthsNum : 0;
-  const forecastGrams = forecastAmountNum / price;
+  const targetPriceNum = parseFloat(targetPrice) || price || 0;
+  const targetGoldGrams =
+    targetPriceNum > 0 ? (parseFloat(balance) || 0) / targetPriceNum : 0;
+  const targetGoldGramsWithCommission = includeCommission
+    ? targetGoldGrams * (1 - COMMISSION_PERCENT / 100)
+    : targetGoldGrams;
+  const targetPriceDiff = price > 0 ? targetPriceNum - price : 0;
+  const targetPricePercent = price > 0 ? (targetPriceDiff / price) * 100 : 0;
 
   // Persist wallet inputs
   useEffect(() => {
@@ -69,6 +67,12 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
       );
     } catch (e) {}
   }, [includeCommission]);
+
+  useEffect(() => {
+    if (price > 0 && (!targetPrice || Number(targetPrice) === 0)) {
+      setTargetPrice(String(price));
+    }
+  }, [price, targetPrice]);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect">
@@ -120,7 +124,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 مقدار طلا قابل خریدن:
               </span>
               <span className="text-lg font-bold text-gold-600 dark:text-gold-400">
-                {goldAmount?.toFixed(3) || "0"} میلی‌گرم
+                {goldAmount?.toFixed(1) || "0"} میلی‌گرم
               </span>
             </div>
 
@@ -130,7 +134,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 هزینه کل:
               </span>
               <span className="text-lg font-bold text-gray-900 dark:text-white">
-                {totalCost.toLocaleString("fa-IR")} تومان
+                {Math.round(totalCost).toLocaleString("fa-IR")} تومان{" "}
               </span>
             </div>
 
@@ -141,7 +145,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                   کارمزد:
                 </span>
                 <span className="text-lg font-bold text-red-600 dark:text-red-400">
-                  {commissionCost.toLocaleString("fa-IR")} تومان
+                  {Math.round(commissionCost).toLocaleString("fa-IR")} تومان
                 </span>
               </div>
             )}
@@ -152,90 +156,80 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 مبلغ خالص:
               </span>
               <span className="text-lg font-bold text-green-600 dark:text-green-400">
-                {(totalCost - commissionCost).toLocaleString("fa-IR")} تومان
+                {Math.round(totalCost - commissionCost).toLocaleString("fa-IR")}{" "}
+                تومان
               </span>
             </div>
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200 dark:border-blue-800 mt-4 space-y-4">
-              <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-                🧮 شبیه‌ساز سرمایه‌گذاری حرفه‌ای
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  سرمایه (تومان)
-                  <input
-                    type="number"
-                    value={forecastAmount}
-                    onChange={(e) => setForecastAmount(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
-                  />
-                </label>
-                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  رشد پیش‌بینی شده (%)
-                  <input
-                    type="number"
-                    value={growthPercent}
-                    onChange={(e) => setGrowthPercent(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
-                  />
-                </label>
-                <label className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  مدت (ماه)
-                  <input
-                    type="number"
-                    value={forecastMonths}
-                    onChange={(e) => setForecastMonths(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
-                  />
-                </label>
-              </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-base font-semibold text-gray-900 dark:text-white">
+                    🎯 قیمت هدف طلا
+                  </h4>
+                </div>
                 <button
-                  onClick={() => setForecastAmount("50000000")}
-                  className="w-full px-3 py-2 rounded-lg bg-gold-500 hover:bg-gold-600 text-white text-sm font-medium transition-colors"
+                  type="button"
+                  onClick={() => setTargetPrice(String(price || ""))}
+                  className="px-3 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
                 >
-                  سناریو ۵۰ میلیون
-                </button>
-                <button
-                  onClick={() => setGrowthPercent("10")}
-                  className="w-full px-3 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
-                >
-                  رشد ۱۰٪
+                  قیمت فعلی
                 </button>
               </div>
+
+              <label className="block text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                قیمت هدف طلا (تومان)
+                <input
+                  type="number"
+                  min="0"
+                  value={targetPrice}
+                  onChange={(e) => setTargetPrice(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500"
+                />
+              </label>
+
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    ارزش بعد از رشد
+                    قیمت فعلی API
                   </p>
                   <p className="mt-2 font-semibold text-gray-900 dark:text-white">
-                    {projectedValue.toLocaleString("fa-IR")} تومان
+                    {price.toLocaleString("fa-IR")} تومان
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    سود کل
+                    تفاوت نسبت به قیمت فعلی
                   </p>
-                  <p className="mt-2 font-semibold text-green-600 dark:text-green-400">
-                    {projectedProfit.toLocaleString("fa-IR")} تومان
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    سود ماهانه
-                  </p>
-                  <p className="mt-2 font-semibold text-purple-600 dark:text-purple-400">
-                    {monthlyProfit.toLocaleString("fa-IR")} تومان
+                  <p
+                    className={`mt-2 font-semibold ${targetPricePercent >= 0 ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}
+                  >
+                    {targetPricePercent >= 0 ? "+" : ""}
+                    {targetPricePercent.toFixed(1)}%
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    میلی‌گرم قابل خرید
+                    میلی‌گرم قابل خرید با قیمت هدف
                   </p>
                   <p className="mt-2 font-semibold text-gold-600 dark:text-gold-400">
-                    {forecastGrams.toFixed(3)} میلی‌گرم
+                    {targetGoldGramsWithCommission.toFixed(1)} میلی‌گرم
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    مقدار خرید در قیمت هدف
+                  </p>
+                  <p className="mt-2 font-semibold text-purple-600 dark:text-purple-400">
+                    {targetGoldGrams.toFixed(1)} میلی‌گرم
                   </p>
                 </div>
               </div>
+
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                اگر قیمت طلا به {targetPriceNum.toLocaleString("fa-IR")} تومان
+                برسد، با موجودی فعلی می‌توانید حدود{" "}
+                {targetGoldGramsWithCommission.toFixed(1)} میلی‌گرم طلا بخرید.
+              </p>
             </div>
           </div>
         )}
