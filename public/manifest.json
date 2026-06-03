@@ -1,9 +1,12 @@
 {
     "name": "نظارت قیمت طلا",
-    "short_name": "Gold Monitor",
-    "description": "نظارت قیمت طلا با هشدار، ماشین حساب و نسخه دسکتاپ",
+    "short_name": "طلا",
+    "description": "نظارت لحظه‌ای قیمت طلا، هشدار قیمت و محاسبات سرمایه",
+    "lang": "fa",
+    "dir": "rtl",
     "start_url": ".",
     "display": "standalone",
+    "orientation": "portrait",
     "background_color": "#0f172a",
     "theme_color": "#d4a54a",
     "icons": [
