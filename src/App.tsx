@@ -42,6 +42,9 @@ function App() {
   const [darkMode, setDarkMode] = useState(true);
   const [priceHistory, setPriceHistory] = useState<number[]>([]);
   const [alertPrice, setAlertPrice] = useState<number | null>(null);
+  const [alertDirection, setAlertDirection] = useState<"above" | "below">(
+    "above",
+  );
   const [walletBalance, setWalletBalance] = useState<number>(0);
   const [totalGold, setTotalGold] = useState<number>(0);
   const [notificationPermission, setNotificationPermission] =
@@ -49,7 +52,6 @@ function App() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
   const [installStatus, setInstallStatus] = useState<string>("");
-  const notificationShownRef = useRef<number | null>(null);
   const lastPriceRef = useRef<number | null>(null);
 
   // Request notification permission on mount
@@ -71,6 +73,11 @@ function App() {
 
       const storedAlert = localStorage.getItem("milli:alertPrice");
       if (storedAlert !== null) setAlertPrice(Number(storedAlert));
+
+      const storedDirection = localStorage.getItem("milli:alertDirection");
+      if (storedDirection === "above" || storedDirection === "below") {
+        setAlertDirection(storedDirection);
+      }
 
       const storedHistory = localStorage.getItem("milli:priceHistory");
       if (storedHistory) setPriceHistory(JSON.parse(storedHistory));
@@ -98,6 +105,12 @@ function App() {
       else localStorage.setItem("milli:alertPrice", String(alertPrice));
     } catch (e) {}
   }, [alertPrice]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("milli:alertDirection", alertDirection);
+    } catch (e) {}
+  }, [alertDirection]);
 
   useEffect(() => {
     try {
@@ -186,18 +199,24 @@ function App() {
           setPriceHistory((prev) => [...prev.slice(-59), newPrice]);
           lastPriceRef.current = newPrice;
 
-          // Check if alert should be triggered
-          if (
-            alertPrice !== null &&
-            newPrice >= alertPrice &&
-            notificationShownRef.current !== alertPrice
-          ) {
-            showNotification(
-              "هشدار قیمت طلا",
-              `قیمت طلا به ${newPrice.toLocaleString("fa-IR")} رسید!`,
-              "🔔",
-            );
-            notificationShownRef.current = alertPrice;
+          // Check if alert should be triggered using toman values.
+          if (alertPrice !== null && last !== null) {
+            const alertThresholdRial = alertPrice * 10;
+            const crossedAbove =
+              last < alertThresholdRial && newPrice >= alertThresholdRial;
+            const crossedBelow =
+              last > alertThresholdRial && newPrice <= alertThresholdRial;
+
+            if (
+              (alertDirection === "above" && crossedAbove) ||
+              (alertDirection === "below" && crossedBelow)
+            ) {
+              showNotification(
+                "هشدار قیمت طلا",
+                `قیمت طلا ${alertDirection === "above" ? "از" : "تا"} ${alertPrice.toLocaleString("fa-IR")} تومان ${alertDirection === "above" ? "بالا رفت" : "پایین آمد"}.`,
+                "🔔",
+              );
+            }
           }
 
           setError(null);
@@ -435,7 +454,11 @@ function App() {
               <PriceAlert
                 currentPrice={displayPrice}
                 alertPrice={alertPrice}
-                onSetAlert={setAlertPrice}
+                alertDirection={alertDirection}
+                onSetAlert={(price, direction = "above") => {
+                  setAlertPrice(price);
+                  setAlertDirection(direction);
+                }}
                 onShowNotification={showNotification}
               />
             )}

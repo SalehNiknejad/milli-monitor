@@ -46,8 +46,8 @@ export default function GoldProfitCalculator({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect mt-4 space-y-4">
       <div>
-        <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-          💹 محاسبه سود خرید و فروش طلا
+        <h4 className="text-xl font-bold dark:text-white">
+          محاسبه سود خرید و فروش طلا
         </h4>
         <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
           در حالت سرمایه، مبلغ واردشده به‌عنوان پول واقعی سرمایه‌گذاری‌شده در

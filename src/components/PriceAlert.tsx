@@ -1,38 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bell, X } from "lucide-react";
 
 interface PriceAlertProps {
   currentPrice: number;
   alertPrice: number | null;
-  onSetAlert: (price: number | null) => void;
+  alertDirection: "above" | "below";
+  onSetAlert: (price: number | null, direction?: "above" | "below") => void;
   onShowNotification: (title: string, body: string, emoji?: string) => void;
 }
 
 export default function PriceAlert({
   currentPrice,
   alertPrice,
+  alertDirection,
   onSetAlert,
   onShowNotification,
 }: PriceAlertProps) {
   const [inputPrice, setInputPrice] = useState<string>("");
   const [showForm, setShowForm] = useState(false);
+  const [selectedDirection, setSelectedDirection] = useState<"above" | "below">(
+    alertDirection,
+  );
+
+  useEffect(() => {
+    setSelectedDirection(alertDirection);
+  }, [alertDirection]);
 
   const handleSetAlert = () => {
     const price = parseFloat(inputPrice);
     if (price > 0) {
-      onSetAlert(price);
+      onSetAlert(price, selectedDirection);
       setInputPrice("");
       setShowForm(false);
       onShowNotification(
         "هشدار قیمت",
-        `هشدار برای قیمت ${price.toLocaleString("fa-IR")} تعیین شد`,
+        `هشدار برای ${selectedDirection === "above" ? "بالا رفتن" : "پایین آمدن"} از ${price.toLocaleString("fa-IR")} تومان تنظیم شد`,
         "🔔",
       );
     }
   };
 
   const handleClearAlert = () => {
-    onSetAlert(null);
+    onSetAlert(null, alertDirection);
     setInputPrice("");
     setShowForm(false);
   };
@@ -63,6 +72,11 @@ export default function PriceAlert({
             </p>
             <p className="text-2xl font-bold text-gold-600 dark:text-gold-400">
               {alertPrice.toLocaleString("fa-IR")} تومان
+            </p>
+            <p className="text-xs text-gray-600 dark:text-gray-400">
+              {alertDirection === "above"
+                ? "وقتی قیمت از این مقدار بالاتر برود"
+                : "وقتی قیمت از این مقدار پایین‌تر بیاید"}
             </p>
             <button
               onClick={handleClearAlert}
@@ -96,6 +110,27 @@ export default function PriceAlert({
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               قیمت هشدار (تومان):
             </label>
+            <div className="grid grid-cols-2 gap-2 rounded-lg bg-white dark:bg-gray-800 p-1 border border-gray-200 dark:border-gray-700">
+              {[
+                { id: "above", label: "بالا رفتن" },
+                { id: "below", label: "پایین آمدن" },
+              ].map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() =>
+                    setSelectedDirection(option.id as "above" | "below")
+                  }
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                    selectedDirection === option.id
+                      ? "bg-gold-500 text-white"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
             <input
               type="number"
               value={inputPrice}
