@@ -13,6 +13,7 @@ import PriceCard from "./components/PriceCard";
 import WalletCalculator from "./components/WalletCalculator";
 import PriceAlert from "./components/PriceAlert";
 import ProfitCalculator from "./components/ProfitCalculator";
+import GoldProfitCalculator from "./components/GoldProfitCalculator";
 import PortfolioSummary from "./components/PortfolioSummary";
 import { rialToToman } from "./utils/currency";
 // import TransactionImporter from "./components/TransactionImporter";
@@ -423,6 +424,7 @@ function App() {
           ) : null}
           {/* Profit Calculator */}
           <ProfitCalculator currentPrice={displayPrice} />
+          {price && <GoldProfitCalculator price={displayPrice} />}
           {/* Tools Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Wallet Calculator */}
