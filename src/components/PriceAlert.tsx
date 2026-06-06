@@ -33,8 +33,8 @@ export default function PriceAlert({
       setInputPrice("");
       setShowForm(false);
       onShowNotification(
-        "هشدار قیمت",
-        `هشدار برای ${selectedDirection === "above" ? "بالا رفتن" : "پایین آمدن"} از ${price.toLocaleString("fa-IR")} تومان تنظیم شد`,
+        "🔔 Price Alert",
+        `Mode: ${selectedDirection === "above" ? "Rise above" : "Fall below"}\nTarget: ${price.toLocaleString("fa-IR")} toman\nYou will be notified once this level is reached.`,
         "🔔",
       );
     }

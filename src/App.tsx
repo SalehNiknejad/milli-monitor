@@ -189,8 +189,8 @@ function App() {
             const diff = newPrice - last;
             const diffPct = ((diff / last) * 100).toFixed(2);
             showNotification(
-              "Price changed",
-              `From ${lastToman.toLocaleString("fa-IR")} toman to ${currentToman.toLocaleString("fa-IR")} toman (${diffToman >= 0 ? "+" : ""}${diffToman.toLocaleString("fa-IR")} toman, ${diffPct}%)`,
+              `${diff > 0 ? "📈" : "📉"} Price changed`,
+              `Previous: ${lastToman.toLocaleString("fa-IR")} toman\nCurrent: ${currentToman.toLocaleString("fa-IR")} toman\nChange: ${diffToman >= 0 ? "+" : ""}${diffToman.toLocaleString("fa-IR")} toman\nRate: ${diffPct}%`,
               diff > 0 ? "📈" : "📉",
             );
           }
@@ -212,8 +212,8 @@ function App() {
 
             if (isAboveThreshold || isBelowThreshold) {
               showNotification(
-                "Gold price alert",
-                `Current price is ${currentToman.toLocaleString("fa-IR")} toman, ${alertDirection === "above" ? "above" : "below"} your alert level of ${alertPrice.toLocaleString("fa-IR")} toman.`,
+                "🔔 Gold price alert",
+                `Current price: ${currentToman.toLocaleString("fa-IR")} toman\nAlert level: ${alertPrice.toLocaleString("fa-IR")} toman\nStatus: ${alertDirection === "above" ? "Above threshold" : "Below threshold"}`,
                 "🔔",
               );
             }
