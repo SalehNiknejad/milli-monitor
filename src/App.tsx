@@ -183,11 +183,14 @@ function App() {
           // Compare with last known price (use ref to avoid stale closures)
           const last = lastPriceRef.current;
           if (last !== null && last !== newPrice) {
+            const lastToman = rialToToman(last);
+            const currentToman = rialToToman(newPrice);
+            const diffToman = currentToman - lastToman;
             const diff = newPrice - last;
             const diffPct = ((diff / last) * 100).toFixed(2);
             showNotification(
-              "قیمت تغییر کرد",
-              `از ${last.toLocaleString("fa-IR")} → ${newPrice.toLocaleString("fa-IR")} (تغییر ${diff >= 0 ? "+" : ""}${diff.toLocaleString("fa-IR")} — ${diffPct}%)`,
+              "Price changed",
+              `From ${lastToman.toLocaleString("fa-IR")} toman to ${currentToman.toLocaleString("fa-IR")} toman (${diffToman >= 0 ? "+" : ""}${diffToman.toLocaleString("fa-IR")} toman, ${diffPct}%)`,
               diff > 0 ? "📈" : "📉",
             );
           }
@@ -209,8 +212,8 @@ function App() {
 
             if (isAboveThreshold || isBelowThreshold) {
               showNotification(
-                "هشدار قیمت طلا",
-                `قیمت فعلی ${currentToman.toLocaleString("fa-IR")} تومان ${alertDirection === "above" ? "بالای" : "پایین‌تر از"} ${alertPrice.toLocaleString("fa-IR")} تومان رسید.`,
+                "Gold price alert",
+                `Current price is ${currentToman.toLocaleString("fa-IR")} toman, ${alertDirection === "above" ? "above" : "below"} your alert level of ${alertPrice.toLocaleString("fa-IR")} toman.`,
                 "🔔",
               );
             }
