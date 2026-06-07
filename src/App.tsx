@@ -42,8 +42,8 @@ function App() {
     ? {
         label: "تتر",
         shortLabel: "USDT",
-        title: "نظارت قیمت تتر",
-        subtitle: "پایش لحظه‌ای USDT / Tether",
+        title: "نظارت تتر",
+        subtitle: "Tether",
         accent: "from-emerald-500 to-green-600",
         pill: "border-yellow-300 bg-yellow-100 text-yellow-800 dark:border-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-100",
         icon: (
@@ -52,8 +52,8 @@ function App() {
             fill="none"
             viewBox="0 0 16 16"
             id="Usdt--Streamline-Cryptocurrency"
-            height="56"
-            width="56"
+            height="52"
+            width="52"
           >
             <path
               fill="#26a17b"
@@ -77,8 +77,8 @@ function App() {
     : {
         label: "طلا",
         shortLabel: "Gold",
-        title: "نظارت قیمت طلا",
-        subtitle: "پایش قیمت طلا 24/7",
+        title: "نظارت طلا",
+        subtitle: "Gold",
         accent: "from-gold-500 to-gold-700",
         badge: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
         pill: "border-emerald-300 bg-emerald-100 text-emerald-800 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-100",
@@ -88,8 +88,8 @@ function App() {
             fill="none"
             viewBox="0 0 24 24"
             id="Gold-Bars--Streamline-Ultimate"
-            height="56"
-            width="56"
+            height="52"
+            width="52"
           >
             <path
               fill="#ffef5e"
@@ -511,7 +511,7 @@ function App() {
                 href={isUsdtRoute ? "/gold" : "/USDT"}
                 className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${assetConfig.pill}`}
               >
-                {isUsdtRoute ? "بازگشت به طلا" : "مشاهده USDT"}
+                {isUsdtRoute ? "ارزش طلا" : "ارزش تتر"}
               </a>
               {deferredPrompt ? (
                 <button
