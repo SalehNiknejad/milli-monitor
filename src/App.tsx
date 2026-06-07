@@ -547,7 +547,7 @@ function App() {
               totalGold={assetHolding}
               onWalletChange={setWalletBalance}
               onGoldChange={setAssetHolding}
-              assetLabel={assetConfig.shortLabel}
+              assetLabel={assetConfig.label}
               assetKey={assetKey}
             />
           )}
@@ -716,6 +716,7 @@ function App() {
                 currentPrice={displayPrice}
                 alertPrice={alertPrice}
                 alertDirection={alertDirection}
+                assetKey={assetKey}
                 onSetAlert={(price, direction = "above") => {
                   setAlertPrice(price);
                   setAlertDirection(direction);

@@ -5,6 +5,7 @@ interface PriceAlertProps {
   currentPrice: number;
   alertPrice: number | null;
   alertDirection: "above" | "below";
+  assetKey?: "gold" | "usdt";
   onSetAlert: (price: number | null, direction?: "above" | "below") => void;
   onShowNotification: (title: string, body: string, emoji?: string) => void;
 }
@@ -13,6 +14,7 @@ export default function PriceAlert({
   currentPrice,
   alertPrice,
   alertDirection,
+  assetKey = "gold",
   onSetAlert,
   onShowNotification,
 }: PriceAlertProps) {
@@ -21,6 +23,19 @@ export default function PriceAlert({
   const [selectedDirection, setSelectedDirection] = useState<"above" | "below">(
     alertDirection,
   );
+  const isUsdt = assetKey === "usdt";
+  const accentClass = isUsdt
+    ? "text-emerald-500"
+    : "text-gold-500";
+  const pillClass = isUsdt
+    ? "bg-emerald-500 text-white"
+    : "bg-gold-500 text-white";
+  const hoverClass = isUsdt
+    ? "hover:bg-emerald-300 dark:hover:bg-emerald-600"
+    : "hover:bg-gold-300 dark:hover:bg-gold-600";
+  const focusRing = isUsdt
+    ? "focus:ring-emerald-500"
+    : "focus:ring-gold-500";
 
   useEffect(() => {
     setSelectedDirection(alertDirection);
@@ -49,7 +64,7 @@ export default function PriceAlert({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect">
       <div className="flex items-center gap-2 mb-6">
-        <Bell size={24} className="text-gold-500" />
+        <Bell size={24} className={accentClass} />
         <h3 className="text-xl font-bold dark:text-white"> هشدار قیمت</h3>
       </div>
 
@@ -66,11 +81,11 @@ export default function PriceAlert({
 
         {/* Alert Status */}
         {alertPrice ? (
-          <div className="space-y-3 p-4 bg-gold-50 dark:bg-gold-900/20 rounded-lg border border-gold-200 dark:border-gold-800">
+          <div className={isUsdt ? "space-y-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800" : "space-y-3 p-4 bg-gold-50 dark:bg-gold-900/20 rounded-lg border border-gold-200 dark:border-gold-800"}>
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
               هشدار فعال:
             </p>
-            <p className="text-2xl font-bold text-gold-600 dark:text-gold-400">
+            <p className={isUsdt ? "text-2xl font-bold text-emerald-600 dark:text-emerald-400" : "text-2xl font-bold text-gold-600 dark:text-gold-400"}>
               {alertPrice.toLocaleString("fa-IR")} تومان
             </p>
             <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -98,7 +113,7 @@ export default function PriceAlert({
         {!showForm && !alertPrice && (
           <button
             onClick={() => setShowForm(true)}
-            className="w-full px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white rounded-lg font-medium transition-colors"
+            className={isUsdt ? "w-full px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors" : "w-full px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white rounded-lg font-medium transition-colors"}
           >
             ➕ تعیین هشدار جدید
           </button>
@@ -123,7 +138,7 @@ export default function PriceAlert({
                   }
                   className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                     selectedDirection === option.id
-                      ? "bg-gold-500 text-white"
+                      ? pillClass
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                   }`}
                 >
@@ -136,7 +151,7 @@ export default function PriceAlert({
               value={inputPrice}
               onChange={(e) => setInputPrice(e.target.value)}
               placeholder={`مثال: ${currentPrice.toLocaleString("fa-IR")}`}
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-600 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-gold-500"
+              className={`w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-600 text-gray-900 dark:text-white placeholder-gray-500 focus:outline-none focus:ring-2 ${focusRing}`}
               autoFocus
             />
 
@@ -157,7 +172,7 @@ export default function PriceAlert({
                     onClick={() =>
                       setInputPrice(Math.round(option.value).toString())
                     }
-                    className="px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 hover:bg-gold-300 dark:hover:bg-gold-600 rounded font-medium transition-colors"
+                    className={`px-2 py-1 text-xs bg-gray-200 dark:bg-gray-600 ${hoverClass} rounded font-medium transition-colors`}
                   >
                     {option.label}
                   </button>

@@ -54,7 +54,12 @@ export default function GoldProfitCalculator({
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect mt-4 space-y-4">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <CandlestickChart size={24} className={assetKey === "usdt" ? "text-emerald-500" : "text-amber-500"} />
+          <CandlestickChart
+            size={24}
+            className={
+              assetKey === "usdt" ? "text-emerald-500" : "text-amber-500"
+            }
+          />
           <h4 className="text-xl font-bold dark:text-white">
             محاسبه سود خرید و فروش {assetLabel}
           </h4>
@@ -69,7 +74,13 @@ export default function GoldProfitCalculator({
         <div className="sm:col-span-3">
           <div className="flex flex-wrap gap-2 rounded-lg bg-gray-100 dark:bg-gray-700 p-1">
             {[
-              { id: "gold", label: assetKey === "usdt" ? "مقدار USDT خریداری‌شده" : "مقدار طلای خرید (میلی‌گرم)" },
+              {
+                id: "gold",
+                label:
+                  assetKey === "usdt"
+                    ? "مقدار USDT خریداری‌شده"
+                    : "مقدار طلای خرید (میلی‌گرم)",
+              },
               { id: "toman", label: "مبلغ سرمایه واردشده (تومان)" },
             ].map((option) => (
               <button
@@ -78,7 +89,9 @@ export default function GoldProfitCalculator({
                 onClick={() => setTradeMode(option.id as "gold" | "toman")}
                 className={`flex-1 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                   tradeMode === option.id
-                    ? (assetKey === "usdt" ? "bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 shadow-sm" : "bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 shadow-sm")
+                    ? assetKey === "usdt"
+                      ? "bg-white dark:bg-gray-800 text-emerald-600 dark:text-emerald-400 shadow-sm"
+                      : "bg-white dark:bg-gray-800 text-amber-600 dark:text-amber-400 shadow-sm"
                     : "text-gray-600 dark:text-gray-300 hover:bg-white/70 dark:hover:bg-gray-600/70"
                 }`}
               >
@@ -90,13 +103,19 @@ export default function GoldProfitCalculator({
 
         {tradeMode === "gold" ? (
           <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-            {assetKey === "usdt" ? "مقدار USDT خریداری‌شده" : "مقدار طلای خرید (میلی‌گرم)"}
+            {assetKey === "usdt"
+              ? "مقدار USDT خریداری‌شده"
+              : "مقدار طلای خرید (میلی‌گرم)"}
             <input
               type="number"
               min="0"
               value={goldAmountToTrade}
               onChange={(e) => setGoldAmountToTrade(e.target.value)}
-              className={assetKey === "usdt" ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"}
+              className={
+                assetKey === "usdt"
+                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              }
             />
           </label>
         ) : (
@@ -107,7 +126,11 @@ export default function GoldProfitCalculator({
               min="0"
               value={tomanAmountToTrade}
               onChange={(e) => setTomanAmountToTrade(e.target.value)}
-              className={assetKey === "usdt" ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"}
+              className={
+                assetKey === "usdt"
+                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              }
             />
           </label>
         )}
@@ -118,7 +141,11 @@ export default function GoldProfitCalculator({
             min="0"
             value={buyPriceInput}
             onChange={(e) => setBuyPriceInput(e.target.value)}
-            className={assetKey === "usdt" ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"}
+            className={
+              assetKey === "usdt"
+                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            }
           />
         </label>
         <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
@@ -128,7 +155,11 @@ export default function GoldProfitCalculator({
             min="0"
             value={sellPriceInput}
             onChange={(e) => setSellPriceInput(e.target.value)}
-            className={assetKey === "usdt" ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"}
+            className={
+              assetKey === "usdt"
+                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            }
           />
         </label>
       </div>

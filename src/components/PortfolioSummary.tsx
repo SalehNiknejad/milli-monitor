@@ -27,7 +27,7 @@ export default function PortfolioSummary({
   totalGold,
   onWalletChange,
   onGoldChange,
-  assetLabel = "طلا",
+  assetLabel,
 }: Props) {
   const [editingCard, setEditingCard] = useState<string | null>(null);
   const [walletInput, setWalletInput] = useState(walletBalance.toString());
@@ -74,8 +74,8 @@ export default function PortfolioSummary({
       title: `موجودی ${assetLabel}`,
       value: totalGold,
       icon: assetLabel === "طلا" ? Coins : DollarSign,
-      color: "text-gold-500",
-      bg: "bg-yellow-500/10",
+      color: assetLabel === "طلا" ? "text-gold-500" : "text-emerald-500",
+      bg: assetLabel === "طلا" ? "bg-yellow-500/10" : "bg-emerald-500/10",
       editable: true,
       key: "gold",
       onSave: handleGoldSave,
