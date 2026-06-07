@@ -35,7 +35,7 @@ const assetConfigs = {
     holdingLabel: "USDT",
   },
   gold: {
-    label: "طلا",
+    label: "میلی",
     shortLabel: "Gold",
     title: "نظارت طلا",
     subtitle: "Gold",
