@@ -1,8 +1,16 @@
 {
     "rewrites": [
         {
+            "source": "/api/usdt",
+            "destination": "https://apiv2.nobitex.ir/market/stats?srcCurrency=usdt"
+        },
+        {
             "source": "/api/:path*",
             "destination": "https://milli.gold/api/:path*"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/index.html"
         }
     ]
 }

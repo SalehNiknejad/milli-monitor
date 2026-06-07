@@ -4,12 +4,20 @@ import { Wallet } from "lucide-react";
 
 interface WalletCalculatorProps {
   price: number;
+  assetKey?: "gold" | "usdt";
+  assetLabel?: string;
+  commissionPercent?: number;
 }
 
-export default function WalletCalculator({ price }: WalletCalculatorProps) {
+export default function WalletCalculator({
+  price,
+  assetKey = "gold",
+  assetLabel = "طلا",
+  commissionPercent = 0.5,
+}: WalletCalculatorProps) {
   const [balance, setBalance] = useState<string>(() => {
     try {
-      const raw = localStorage.getItem("milli:wallet_balance");
+      const raw = localStorage.getItem(`milli:wallet_balance:${assetKey}`) ?? localStorage.getItem("milli:wallet_balance");
       return raw ?? "";
     } catch (e) {
       return "";
@@ -17,7 +25,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   });
   const [includeCommission, setIncludeCommission] = useState<boolean>(() => {
     try {
-      const raw = localStorage.getItem("milli:wallet_includeCommission");
+      const raw = localStorage.getItem(`milli:wallet_includeCommission:${assetKey}`) ?? localStorage.getItem("milli:wallet_includeCommission");
       return raw ? raw === "true" : true;
     } catch (e) {
       return true;
@@ -25,7 +33,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   });
   const [targetPrice, setTargetPrice] = useState<string>("0");
 
-  const COMMISSION_PERCENT = 0.5;
+  const COMMISSION_PERCENT = commissionPercent;
 
   const calculateGold = () => {
     const balanceNum = parseFloat(balance);
@@ -54,18 +62,18 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
 
   useEffect(() => {
     try {
-      localStorage.setItem("milli:wallet_balance", balance);
+      localStorage.setItem(`milli:wallet_balance:${assetKey}`, balance);
     } catch (e) {}
-  }, [balance]);
+  }, [balance, assetKey]);
 
   useEffect(() => {
     try {
       localStorage.setItem(
-        "milli:wallet_includeCommission",
+        `milli:wallet_includeCommission:${assetKey}`,
         includeCommission ? "true" : "false",
       );
     } catch (e) {}
-  }, [includeCommission]);
+  }, [includeCommission, assetKey]);
 
   useEffect(() => {
     if (price > 0 && (!targetPrice || Number(targetPrice) === 0)) {
@@ -76,9 +84,9 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect">
       <div className="flex items-center gap-2 mb-6">
-        <Wallet size={24} className="text-gold-500" />
+        <Wallet size={24} className={assetKey === "usdt" ? "text-emerald-500" : "text-amber-500"} />
         <h3 className="text-xl font-bold dark:text-white">
-          ماشین حساب کیف پول
+          ماشین حساب کیف پول {assetLabel}
         </h3>
       </div>
 
@@ -116,10 +124,10 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
           <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center p-3 bg-gold-50 dark:bg-gold-900/20 rounded-lg">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                مقدار طلا قابل خریدن:
+                مقدار {assetLabel} قابل خریدن:
               </span>
               <span className="text-lg font-bold text-gold-600 dark:text-gold-400">
-                {goldAmount?.toFixed(1) || "0"} میلی‌گرم
+                {goldAmount?.toFixed(1) || "0"} {assetLabel === "طلا" ? "میلی‌گرم" : "USDT"}
               </span>
             </div>
 
@@ -157,7 +165,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h4 className="text-base font-semibold text-gray-900 dark:text-white">
-                    🎯 قیمت هدف طلا
+                    🎯 قیمت هدف {assetLabel}
                   </h4>
                 </div>
                 <button
@@ -170,7 +178,7 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
               </div>
 
               <label className="block text-sm text-gray-700 dark:text-gray-300 space-y-2">
-                قیمت هدف طلا (تومان)
+                قیمت هدف {assetLabel} (تومان)
                 <input
                   type="number"
                   min="0"
@@ -202,10 +210,10 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                 </div>
                 <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
-                    میلی‌گرم قابل خرید با قیمت هدف
+                    {assetLabel === "طلا" ? "میلی‌گرم" : "USDT"} قابل خرید با قیمت هدف
                   </p>
                   <p className="mt-2 font-semibold text-gold-600 dark:text-gold-400">
-                    {targetGoldGramsWithCommission.toFixed(1)} میلی‌گرم
+                    {targetGoldGramsWithCommission.toFixed(1)} {assetLabel === "طلا" ? "میلی‌گرم" : "USDT"}
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
@@ -213,15 +221,15 @@ export default function WalletCalculator({ price }: WalletCalculatorProps) {
                     مقدار خرید در قیمت هدف
                   </p>
                   <p className="mt-2 font-semibold text-purple-600 dark:text-purple-400">
-                    {targetGoldGrams.toFixed(1)} میلی‌گرم
+                    {targetGoldGrams.toFixed(1)} {assetLabel === "طلا" ? "میلی‌گرم" : "USDT"}
                   </p>
                 </div>
               </div>
 
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                اگر قیمت طلا به {targetPriceNum.toLocaleString("fa-IR")} تومان
+                اگر قیمت {assetLabel} به {targetPriceNum.toLocaleString("fa-IR")} تومان
                 برسد، با موجودی فعلی می‌توانید حدود{" "}
-                {targetGoldGramsWithCommission.toFixed(1)} میلی‌گرم طلا بخرید.
+                {targetGoldGramsWithCommission.toFixed(1)} {assetLabel === "طلا" ? "میلی‌گرم طلا" : "USDT"} بخرید.
               </p>
             </div>
           </div>

@@ -7,6 +7,11 @@ interface PriceCardProps {
   changePercent: number;
   isIncreasing: boolean;
   isDecreasing: boolean;
+  assetLabel?: string;
+  assetUnit?: string;
+  assetAccent?: string;
+  assetIcon?: any;
+  assetKey?: string;
 }
 
 export default function PriceCard({
@@ -16,6 +21,11 @@ export default function PriceCard({
   changePercent,
   isIncreasing,
   isDecreasing,
+  assetLabel = "طلا",
+  assetUnit = "تومان",
+  assetAccent = "from-amber-400 to-yellow-600",
+  assetIcon = "💛",
+  assetKey = "gold",
 }: PriceCardProps) {
   const formattedDate = new Date(date).toLocaleString("fa-IR", {
     year: "numeric",
@@ -26,26 +36,36 @@ export default function PriceCard({
     second: "2-digit",
   });
 
+  const gradientClass =
+    assetKey === "gold"
+      ? "from-gold-500/10 via-transparent to-blue-500/10"
+      : "from-teal-500/10 via-transparent to-emerald-500/10";
   return (
     <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 shine-effect">
       {/* Background gradient decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gold-500/10 via-transparent to-blue-500/10 pointer-events-none"></div>
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${gradientClass} pointer-events-none`}
+      ></div>
 
       <div className="relative p-8 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-              قیمت طلا 18 عیار
+              قیمت {assetLabel}
             </h2>
             <div className="flex items-baseline gap-2">
-              <span className="text-5xl font-bold bg-gradient-to-r from-gold-600 to-gold-500 bg-clip-text text-transparent">
+              <span
+                className={`text-5xl font-bold bg-gradient-to-r ${assetAccent} bg-clip-text text-transparent`}
+              >
                 {price.toLocaleString("fa-IR")}
               </span>
-              <span className="text-gray-500 dark:text-gray-400">تومان</span>
+              <span className="text-gray-500 dark:text-gray-400">
+                {assetUnit}
+              </span>
             </div>
           </div>
-          <div className="text-5xl">💰</div>
+          <div className="text-5xl">{assetIcon}</div>
         </div>
 
         {/* Change indicator */}

@@ -6,6 +6,7 @@ import {
   Edit2,
   Check,
   X,
+  DollarSign,
 } from "lucide-react";
 import { useState } from "react";
 import { formatToman } from "../utils/currency";
@@ -16,6 +17,8 @@ interface Props {
   totalGold: number;
   onWalletChange: (value: number) => void;
   onGoldChange: (value: number) => void;
+  assetLabel?: string;
+  assetKey?: string;
 }
 
 export default function PortfolioSummary({
@@ -24,6 +27,7 @@ export default function PortfolioSummary({
   totalGold,
   onWalletChange,
   onGoldChange,
+  assetLabel = "طلا",
 }: Props) {
   const [editingCard, setEditingCard] = useState<string | null>(null);
   const [walletInput, setWalletInput] = useState(walletBalance.toString());
@@ -67,9 +71,9 @@ export default function PortfolioSummary({
       unit: "toman",
     },
     {
-      title: "موجودی میلی",
+      title: `موجودی ${assetLabel}`,
       value: totalGold,
-      icon: Coins,
+      icon: assetLabel === "طلا" ? Coins : DollarSign,
       color: "text-gold-500",
       bg: "bg-yellow-500/10",
       editable: true,
@@ -80,7 +84,7 @@ export default function PortfolioSummary({
       unit: "unit",
     },
     {
-      title: "ارزش طلا",
+      title: `ارزش ${assetLabel}`,
       value: goldAssetValueRial,
       icon: BarChart3,
       color: "text-purple-500",
@@ -165,7 +169,7 @@ export default function PortfolioSummary({
                     {card.unit === "rial"
                       ? formatToman(card.value)
                       : card.value.toLocaleString("fa-IR")}
-                    {card.unit === "unit" ? " میلی" : " تومان"}
+                    {card.unit === "unit" ? ` ${assetLabel}` : " تومان"}
                   </h3>
 
                   <div className={`rounded-xl p-3 ${card.bg}`}>

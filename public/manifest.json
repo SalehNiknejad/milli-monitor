@@ -1,14 +1,14 @@
 {
-    "name": "نظارت قیمت طلا",
-    "short_name": "طلا",
-    "description": "نظارت لحظه‌ای قیمت طلا، هشدار قیمت و محاسبات سرمایه",
+    "name": "GENERAL Monitor",
+    "short_name": "GENERAL",
+    "description": "نظارت لحظه‌ای قیمت طلا و تتر، هشدار قیمت و محاسبات سرمایه",
     "lang": "fa",
     "dir": "rtl",
     "start_url": ".",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#0f172a",
-    "theme_color": "#d4a54a",
+    "theme_color": "#10b981",
     "icons": [
         {
             "src": "/icon-192.png",
