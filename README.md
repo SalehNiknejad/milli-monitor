@@ -1,194 +1,297 @@
-﻿# 💛 نظارت قیمت طلا - Gold Price Monitor
+# Milli Monitor
 
-یک برنامه وب مدرن و جذاب برای دنبال کردن قیمت طلا 18 عیار، مدیریت تراکنش‌ها، هشدار قیمت و ذخیره‌سازی محلی.
+A modern portfolio and market monitoring application for Gold and USDT investors.
 
-## ✨ ویژگی‌ها
+Milli Monitor helps you track real-time prices, calculate profits, manage your holdings, estimate future purchases, and create custom price alerts — all within a fast, responsive, and desktop-ready interface.
 
-- 🔄 **بروزرسانی قیمت خودکار**: دریافت قیمت جدید هر 60 ثانیه
-- 🔔 **اطلاع‌رسانی مرورگر**: هشدار وقتی قیمت تغییر می‌کند یا اعلان قیمت تنظیم شده برآورده می‌شود
-- 💼 **ماشین حساب کیف پول**: محاسبه مقدار طلا قابل خرید با موجودی شما
-- 💰 **محاسبه کارمزد 0.5%**: شامل‌سازی کارمزد خرید در محاسبات
-- 🎯 **هشدار قیمت**: تعیین هشدار با میانبرهای +1%، +2%، -1% و -2%
-- 🪙 **محاسب‌گر سود**: ثبت خریدها و مشاهده سود/ضرر فعلی
-- 🧾 **نمایش تاریخچه تراکنش**: خرید، فروش، هدیه، واریز و برداشت
-- 📥 **ایمپورت تراکنش از JSON**: وارد کردن تراکنش‌ها از ورودی JSON
-- 🌙 **تم شب و روشن**: ذخیره تنظیمات تم در localStorage
-- 📱 **طراحی واکنش‌گرا**: سازگاری با موبایل، تبلت و دسکتاپ
-- 🖥️ **پشتیبانی از Electron**: آماده برای بسته‌بندی به عنوان اپ دسکتاپ
-- 🗄️ **سرور محلی Express**: ذخیره و بارگذاری داده پورتفولیو در `server/data/portfolio.json`
+![React](https://img.shields.io/badge/React-18-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
+![Vite](https://img.shields.io/badge/Vite-4-purple)
+![Electron](https://img.shields.io/badge/Electron-28-green)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-## 🚀 شروع سریع
+---
 
-### نیازمندی‌ها
+## ✨ Features
 
-- Node.js 16+
-- npm یا yarn
+### 📈 Real-Time Market Monitoring
 
-### نصب
+* Live Gold price tracking
+* Live USDT price tracking
+* Automatic price refresh
+* Price change indicators
+* Last update timestamps
+
+### 💼 Portfolio Overview
+
+Track your complete investment portfolio:
+
+* Wallet balance
+* Asset holdings
+* Asset value
+* Total portfolio value
+
+### 🧮 Profit Calculators
+
+#### Gold Profit Calculator
+
+* Buy and sell profit estimation
+* Commission-aware calculations
+* Historical purchase tracking
+* Current profit/loss analysis
+
+#### USDT Profit Calculator
+
+* Buy and sell profit estimation
+* Target price simulation
+* Capital planning
+* Commission-aware calculations
+
+### 💰 Wallet Calculator
+
+Estimate how much Gold or USDT can be purchased based on your available capital.
+
+Features include:
+
+* Purchase amount estimation
+* Fee calculation
+* Net asset calculation
+* Total cost breakdown
+
+### 🔔 Price Alerts
+
+Create custom market alerts and get notified when target prices are reached.
+
+* Custom target prices
+* Browser notifications
+* Persistent alert storage
+
+### 🎨 User Experience
+
+* Modern dark interface
+* Responsive design
+* RTL support
+* Local-first experience
+* Desktop support via Electron
+
+---
+
+## 📸 Screenshots
+
+### Gold Dashboard
+
+![Gold Dashboard](./screenshots/gold-dashboard.png)
+
+### USDT Dashboard
+
+![USDT Dashboard](./screenshots/usdt-dashboard.png)
+
+---
+
+## 🏗️ Technology Stack
+
+### Frontend
+
+* React 18
+* TypeScript
+* Vite
+* Zustand
+* React Router
+* Tailwind CSS
+* Recharts
+* Lucide React
+
+### Backend
+
+* Express
+* CORS
+
+### Desktop
+
+* Electron
+* Electron Builder
+
+---
+
+## 📁 Project Structure
+
+```text
+src
+├── components
+│   ├── layout
+│   ├── PriceCard
+│   ├── AlertStatus
+│   ├── GoldProfitCalculator
+│   ├── HeartHint
+│   ├── PortfolioSummary
+│   ├── PriceAlert
+│   ├── ProfitCalculator
+│   └── WalletCalculator
+│
+├── configs
+│   └── assetConfig.tsx
+│
+├── hooks
+│   └── useAssetPrice.ts
+│
+├── services
+│   └── portfolioApi.ts
+│
+├── store
+│   └── portfolioStore.ts
+│
+├── types
+│
+├── utils
+│   ├── currency.ts
+│   └── transactionParser.ts
+│
+├── App.tsx
+├── main.tsx
+└── index.css
+```
+
+---
+
+## 🚀 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/SalehNiknejad/milli-monitor.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd milli-monitor
+```
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-### اجرا در حالت توسعه
+---
 
-ابتدا سرور محلی را اجرا کنید:
+## 💻 Development
 
-```bash
-npm run server
-```
-
-سپس برنامه فرانت‌اند را اجرا کنید:
+Run frontend:
 
 ```bash
 npm run dev
 ```
 
-یا همه چیز را هم‌زمان با دستور زیر اجرا کنید:
+Run backend:
 
 ```bash
-npm run start
+npm run server
 ```
 
-برنامه فرانت‌اند روی `http://localhost:5173` و سرور محلی روی `http://localhost:3001` اجرا می‌شود.
+Run both frontend and backend:
 
-### ساخت برای تولید
+```bash
+npm start
+```
+
+Frontend runs on:
+
+```text
+http://localhost:5173
+```
+
+Backend runs on:
+
+```text
+http://localhost:3001
+```
+
+---
+
+## 📦 Production Build
+
+Build the application:
 
 ```bash
 npm run build
 ```
 
-### پیش‌نمایش بسته تولید شده
+Preview production build:
 
 ```bash
 npm run preview
 ```
 
-### توسعه Electron
+---
+
+## 🖥️ Electron
+
+Run Electron in development mode:
 
 ```bash
 npm run electron:dev
 ```
 
-### ساخت بسته Electron
+Build desktop application:
 
 ```bash
 npm run electron:build
 ```
 
-## 📋 فناوری‌های استفاده شده
+Generated installers will be available in:
 
-- **React 18**
-- **TypeScript**
-- **Vite**
-- **Tailwind CSS**
-- **Lucide React**
-- **Zustand**
-- **Express**
-- **Electron**
-- **Recharts**
-
-## 🎨 ساختار پروژه
-
-```
-src/
-├── components/
-│   ├── PriceCard.tsx
-│   ├── WalletCalculator.tsx
-│   ├── PriceAlert.tsx
-│   ├── ProfitCalculator.tsx
-│   ├── TransactionsTable.tsx
-│   ├── TransactionImporter.tsx
-│   └── PortfolioSummary.tsx
-├── services/
-│   └── portfolioApi.ts
-├── store/
-│   └── portfolioStore.ts
-├── utils/
-│   ├── currency.ts
-│   └── transactionParser.ts
-├── App.tsx
-├── main.tsx
-└── index.css
-
-server/
-├── server.js
-├── routes/
-│   └── portfolio.routes.js
-├── services/
-│   └── portfolio.service.js
-└── data/
-    └── portfolio.json
+```text
+dist-electron/
 ```
 
-## 📝 راهنمای استفاده
+---
 
-### 1️⃣ مشاهده قیمت طلا
+## 💾 Data Persistence
 
-- قیمت لحظه‌ای طلا 18 عیار را ببینید
-- تغییرات قیمت را به همراه درصد نمایش می‌دهد
-- زمان آخرین بروزرسانی قیمت را بررسی کنید
+Milli Monitor stores user data locally and on the local Express server to preserve information between sessions.
 
-### 2️⃣ ماشین حساب کیف پول
+Stored data includes:
 
-1. موجودی کیف پول خود را وارد کنید
-2. انتخاب کنید که شامل کارمزد 0.5% باشد یا خیر
-3. مقدار طلای قابل خرید، هزینه کل، کارمزد و مبلغ خالص را ببینید
+* Portfolio information
+* Holdings
+* Price alerts
+* Theme preferences
+* Calculator inputs
 
-### 3️⃣ هشدار قیمت
+---
 
-1. روی "تعیین هشدار جدید" کلیک کنید
-2. قیمت هشدار را وارد کنید یا از دکمه‌های سریع استفاده کنید
-3. وقتی قیمت به مقدار تعیین شده برسد، مرورگر اعلان ارسال می‌کند
+## 🎯 Use Cases
 
-### 4️⃣ محاسب‌گر سود
+* Monitoring Gold investments
+* Monitoring USDT holdings
+* Calculating profit and loss
+* Planning future purchases
+* Tracking portfolio performance
+* Setting automated market alerts
 
-1. خریدهای قبلی را با مقدار میلی و قیمت خرید وارد کنید
-2. خریدها ذخیره می‌شوند و می‌توانید چند مورد اضافه کنید
-3. سود یا ضرر کل و میانگین قیمت خرید را مشاهده کنید
+---
 
-### 5️⃣ مدیریت تراکنش‌ها
+## 🔮 Roadmap
 
-- لیست تراکنش‌ها شامل خرید، فروش، هدیه، واریز و برداشت است
-- تاریخچه با تاریخ و زمان شمسی نمایش داده می‌شود
-- از بخش "ایمپورت تراکنش‌ها" می‌توانید JSON را وارد کنید تا تراکنش‌ها ذخیره شوند
+* Historical price charts
+* Advanced alert conditions
+* Additional asset support
+* Cloud synchronization
+* Portfolio analytics
 
-### 6️⃣ نصب PWA
+---
 
-- اگر مرورگر از PWA پشتیبانی کند، گزینه نصب برنامه نمایش داده می‌شود
-- نصب برنامه به شما تجربه دسکتاپ مانند می‌دهد
-
-## 🔌 API
-
-برنامه از API زیر برای دریافت قیمت طلای 18 عیار استفاده می‌کند:
-
-```bash
-https://milli.gold/api/v1/public/milli-price/detail
-```
-
-در حالت توسعه، Vite درخواست‌های `/api/v1/public/milli-price/detail` را به صورت پروکسی به آدرس بالا هدایت می‌کند.
-
-## 💾 ذخیره‌سازی و پایداری
-
-- تنظیمات تم و هشدار قیمت در `localStorage` ذخیره می‌شوند
-- داده‌های خرید و پورتفولیو روی سرور محلی Express در `server/data/portfolio.json` نگهداری می‌شوند
-- تراکنش‌های وارد شده و خریدهای ثبت‌شده پس از بارگذاری مجدد مرورگر حفظ می‌شوند
-
-## 💡 نکات مفید
-
-- 🔔 برای دریافت اعلان، دسترسی مرورگر به Notification را فعال کنید
-- 📱 رابط کاربری برای موبایل و تبلت بهینه است
-- 🌐 برای دریافت قیمت به اتصال اینترنت نیاز دارید
-- 📥 از قابلیت ایمپورت JSON برای انتقال تراکنش‌های قبلی استفاده کنید
-
-## 📧 انتقادات و پیشنهادات
-
-اگر ایده یا پیشنهادی دارید، خوشحال می‌شوم بشنوم!
-
-## 📄 مجوز
+## 📄 License
 
 MIT License
 
 ---
 
-ساخته شده با ❤️ برای دوستداران طلا و سرمایه‌گذار
+## 👨‍💻 Author
+
+**Saleh Niknejad**
+
+Frontend Developer • React • TypeScript • Electron
+
+GitHub: https://github.com/SalehNiknejad
