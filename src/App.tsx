@@ -12,6 +12,9 @@ import WalletCalculator from "./components/WalletCalculator";
 import assetConfigs from "./configs/assetConfig";
 import { useAssetPrice } from "./hooks/useAssetPrice";
 import { rialToToman } from "./utils/currency";
+import HeartHint from "./components/HeartHint";
+import TransactionsTable from "./components/TransactionsTable";
+import TransactionImporter from "./components/TransactionImporter";
 // import TransactionImporter from "./components/TransactionImporter";
 // import TransactionsTable from "./components/TransactionsTable";
 
@@ -191,7 +194,7 @@ function App() {
               <AlertStatus alertPrice={alertPrice} isUsdtRoute={isUsdtRoute} />
             </div>
           ) : null}
-          {/* Profit Calculator */}
+          <HeartHint />
           {assetKey === "gold" && (
             <ProfitCalculator currentPrice={displayPrice} />
           )}
@@ -203,7 +206,6 @@ function App() {
               commissionPercent={assetConfig.commission}
             />
           )}
-          {/* Tools Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {price && (
               <WalletCalculator
@@ -214,7 +216,6 @@ function App() {
               />
             )}
 
-            {/* Price Alert */}
             {price && (
               <PriceAlert
                 currentPrice={displayPrice}
@@ -230,8 +231,8 @@ function App() {
             )}
           </div>
 
-          {/* <TransactionsTable />
-          <TransactionImporter /> */}
+          <TransactionsTable />
+          <TransactionImporter />
         </div>
       </main>
 
