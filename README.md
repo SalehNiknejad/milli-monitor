@@ -80,11 +80,11 @@ Create custom market alerts and get notified when target prices are reached.
 
 ### Gold Dashboard
 
-![Gold Dashboard](./screenshots/gold-dashboard.png)
+![Gold Dashboard](./screenshots/gold.png)
 
 ### USDT Dashboard
 
-![USDT Dashboard](./screenshots/usdt-dashboard.png)
+![USDT Dashboard](./screenshots/usdt.png)
 
 ---
 
