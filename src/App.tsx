@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AlertStatus } from "./components/AlertStatus";
+
 import GoldProfitCalculator from "./components/GoldProfitCalculator";
 import Header from "./components/layout/Header";
 import PortfolioSummary from "./components/PortfolioSummary";
@@ -10,13 +10,13 @@ import PriceCardLoading from "./components/PriceCard/PriceCardLoading";
 import ProfitCalculator from "./components/ProfitCalculator";
 import WalletCalculator from "./components/WalletCalculator";
 import assetConfigs from "./configs/assetConfig";
-import { useAssetPrice } from "./hooks/useAssetPrice";
-import { rialToToman } from "./utils/currency";
 import HeartHint from "./components/HeartHint";
-import TransactionsTable from "./components/TransactionsTable";
-import TransactionImporter from "./components/TransactionImporter";
 // import TransactionImporter from "./components/TransactionImporter";
 // import TransactionsTable from "./components/TransactionsTable";
+
+import { AlertStatus } from "./components/AlertStatus";
+import { useAssetPrice } from "./hooks/useAssetPrice";
+import { rialToToman } from "./utils/currency";
 
 function App() {
   const isUsdtRoute =
@@ -231,8 +231,8 @@ function App() {
             )}
           </div>
 
-          <TransactionsTable />
-          <TransactionImporter />
+          {/* <TransactionsTable />
+          <TransactionImporter /> */}
         </div>
       </main>
 
