@@ -33,30 +33,25 @@ function App() {
   );
   const [walletBalance, setWalletBalance] = useState<number>(0);
   const [assetHolding, setAssetHolding] = useState<number>(0);
-  const [notificationPermission, setNotificationPermission] =
-    useState<NotificationPermission>("default");
+  // const [notificationPermission, setNotificationPermission] =
+  //   useState<NotificationPermission>("default");
 
   const showNotification = (title: string, body: string, emoji?: string) => {
-    console.log("SHOW NOTIFICATION");
-    console.log("state:", notificationPermission);
-    console.log("browser:", Notification.permission);
     if (
       typeof Notification !== "undefined" &&
-      notificationPermission === "granted"
+      Notification.permission === "granted"
     ) {
       new Notification(emoji ? `${emoji} ${title}` : title, {
         body,
         tag: Date.now().toString(),
       });
+
       return;
     }
 
-    if (typeof window !== "undefined") {
-      console.log("WINDOW ALERT");
-
-      window.alert(`${emoji ? `${emoji} ` : ""}${title}\n${body}`);
-    }
+    window.alert(`${emoji ? `${emoji} ` : ""}${title}\n${body}`);
   };
+
   const { price, previousPrice, loading, error, priceHistory } = useAssetPrice({
     assetKey,
     alertPrice,
@@ -65,15 +60,15 @@ function App() {
   });
 
   // Request notification permission on mount
-  useEffect(() => {
-    if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        setNotificationPermission(permission);
-      });
-    } else if ("Notification" in window) {
-      setNotificationPermission(Notification.permission);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if ("Notification" in window && Notification.permission === "default") {
+  //     Notification.requestPermission().then((permission) => {
+  //       setNotificationPermission(permission);
+  //     });
+  //   } else if ("Notification" in window) {
+  //     setNotificationPermission(Notification.permission);
+  //   }
+  // }, []);
 
   // Load persisted settings (dark mode, alert price, price history, wallet and gold)
   useEffect(() => {
@@ -112,7 +107,7 @@ function App() {
       if (alertPrice === null) localStorage.removeItem("milli:alertPrice");
       else localStorage.setItem("milli:alertPrice", String(alertPrice));
     } catch (e) {}
-  }, [alertPrice, alertPrice, alertDirection, notificationPermission]);
+  }, [alertPrice, alertPrice, alertDirection]);
 
   useEffect(() => {
     try {
