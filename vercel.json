@@ -9,7 +9,15 @@
             "destination": "https://milli.gold/api/:path*"
         },
         {
-            "source": "/(.*)",
+            "source": "/usdt",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/gold",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/",
             "destination": "/index.html"
         }
     ]

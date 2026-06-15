@@ -6,7 +6,6 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
-    historyApiFallback: true,
     proxy: {
       "/api/usdt": {
         target: "http://localhost:3001",
