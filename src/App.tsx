@@ -37,20 +37,23 @@ function App() {
     useState<NotificationPermission>("default");
 
   const showNotification = (title: string, body: string, emoji?: string) => {
+    console.log("SHOW NOTIFICATION");
+    console.log("state:", notificationPermission);
+    console.log("browser:", Notification.permission);
     if (
       typeof Notification !== "undefined" &&
       notificationPermission === "granted"
     ) {
       new Notification(emoji ? `${emoji} ${title}` : title, {
         body,
-        icon: "💛",
-        badge: "💛",
         tag: Date.now().toString(),
       });
       return;
     }
 
     if (typeof window !== "undefined") {
+      console.log("WINDOW ALERT");
+
       window.alert(`${emoji ? `${emoji} ` : ""}${title}\n${body}`);
     }
   };
