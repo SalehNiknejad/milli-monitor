@@ -129,7 +129,7 @@ export function useAssetPrice({
     };
 
     fetchPrice();
-    const interval = setInterval(fetchPrice, 60000);
+    const interval = setInterval(fetchPrice, 30000);
 
     return () => {
       clearInterval(interval);
