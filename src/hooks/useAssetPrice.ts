@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { rialToToman } from "../utils/currency";
-
+import { FetchInterval } from "@/utils/useFetchInterval";
 interface PriceData {
   price18: number;
   date: string;
@@ -23,14 +23,13 @@ export function useAssetPrice({
   showNotification,
 }: Params) {
   const isUsdt = assetKey === "usdt";
-
   const [price, setPrice] = useState<PriceData | null>(null);
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const lastPriceRef = useRef<number | null>(null);
-
+  console.log(FetchInterval);
   const [priceHistory, setPriceHistory] = useState<number[]>(() => {
     if (typeof window === "undefined") return [];
 
@@ -129,7 +128,7 @@ export function useAssetPrice({
     };
 
     fetchPrice();
-    const interval = setInterval(fetchPrice, 30000);
+    const interval = setInterval(fetchPrice, Number(FetchInterval));
 
     return () => {
       clearInterval(interval);

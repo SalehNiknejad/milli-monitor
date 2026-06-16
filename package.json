@@ -16,10 +16,12 @@
         "electron:build": "npm run build && electron-builder"
     },
     "dependencies": {
+        "@flags-sdk/vercel": "^1.4.0",
         "@vercel/analytics": "^2.0.1",
         "@vercel/speed-insights": "^2.0.0",
         "cors": "^2.8.6",
         "express": "^5.2.1",
+        "flags": "^4.1.0",
         "fs-extra": "^11.3.5",
         "jalaali-js": "^1.2.8",
         "lucide-react": "^0.263.1",
