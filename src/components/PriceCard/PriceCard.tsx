@@ -35,7 +35,7 @@ export default function PriceCard({
     minute: "2-digit",
     second: "2-digit",
   });
-
+  const refreshSeconds = Number(import.meta.env.VITE_PRICE_INTERVAL) / 1000;
   const gradientClass =
     assetKey === "gold"
       ? "from-gold-500/10 via-transparent to-blue-500/10"
@@ -95,10 +95,22 @@ export default function PriceCard({
           </div>
 
           {/* Date and time */}
-          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
             <p className="text-sm text-gray-600 dark:text-gray-400">
               📅 آخرین بروزرسانی: {formattedDate}
             </p>
+
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+              </span>
+
+              <span className="text-xs font-medium text-cyan-700 dark:text-cyan-300">
+                بروزرسانی خودکار هر {refreshSeconds.toLocaleString("fa-IR")}{" "}
+                ثانیه
+              </span>
+            </div>
           </div>
         </div>
       </div>
