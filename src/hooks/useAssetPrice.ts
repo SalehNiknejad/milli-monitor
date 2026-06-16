@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { rialToToman } from "../utils/currency";
-import { FetchInterval } from "../utils/useFetchInterval";
 interface PriceData {
   price18: number;
   date: string;
@@ -27,9 +26,8 @@ export function useAssetPrice({
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const intervalT = Number(import.meta.env.VITE_PRICE_INTERVAL) || 30000;
   const lastPriceRef = useRef<number | null>(null);
-  console.log(FetchInterval);
   const [priceHistory, setPriceHistory] = useState<number[]>(() => {
     if (typeof window === "undefined") return [];
 
@@ -126,10 +124,8 @@ export function useAssetPrice({
         setLoading(false);
       }
     };
-
     fetchPrice();
-    const interval = setInterval(fetchPrice, Number(FetchInterval));
-
+    const interval = setInterval(fetchPrice, intervalT);
     return () => {
       clearInterval(interval);
       controller?.abort();
