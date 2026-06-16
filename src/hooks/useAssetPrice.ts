@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { rialToToman } from "../utils/currency";
-import { FetchInterval } from "@/utils/useFetchInterval";
+import { FetchInterval } from "../utils/useFetchInterval";
 interface PriceData {
   price18: number;
   date: string;
