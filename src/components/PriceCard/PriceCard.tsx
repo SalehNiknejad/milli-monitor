@@ -40,6 +40,23 @@ export default function PriceCard({
     assetKey === "gold"
       ? "from-gold-500/10 via-transparent to-blue-500/10"
       : "from-teal-500/10 via-transparent to-emerald-500/10";
+
+  const refreshBadgeClass =
+    assetKey === "gold"
+      ? {
+          wrapper:
+            "bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20",
+          ping: "bg-amber-400",
+          dot: "bg-amber-500",
+          text: "text-amber-700 dark:text-amber-300",
+        }
+      : {
+          wrapper:
+            "bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20",
+          ping: "bg-emerald-400",
+          dot: "bg-emerald-500",
+          text: "text-emerald-700 dark:text-emerald-300",
+        };
   return (
     <div className="md:col-span-2">
       <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 shine-effect">
@@ -100,13 +117,19 @@ export default function PriceCard({
               📅 آخرین بروزرسانی: {formattedDate}
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20">
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${refreshBadgeClass.wrapper}`}
+            >
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+                <span
+                  className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${refreshBadgeClass.ping}`}
+                />
+                <span
+                  className={`relative inline-flex rounded-full h-2.5 w-2.5 ${refreshBadgeClass.dot}`}
+                />
               </span>
 
-              <span className="text-xs font-medium text-cyan-700 dark:text-cyan-300">
+              <span className={`text-xs font-medium ${refreshBadgeClass.text}`}>
                 بروزرسانی خودکار هر {refreshSeconds.toLocaleString("fa-IR")}{" "}
                 ثانیه
               </span>
