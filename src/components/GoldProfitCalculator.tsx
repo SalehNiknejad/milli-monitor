@@ -1,5 +1,6 @@
 import { CandlestickChart } from "lucide-react";
 import { useEffect, useState } from "react";
+import CollapsibleCard from "./CollapsibleCard";
 
 interface GoldProfitCalculatorProps {
   price: number;
@@ -20,6 +21,7 @@ export default function GoldProfitCalculator({
     useState<string>("1000000");
   const [buyPriceInput, setBuyPriceInput] = useState<string>("0");
   const [sellPriceInput, setSellPriceInput] = useState<string>("0");
+  const [isOpen, setIsOpen] = useState(false);
 
   const COMMISSION_PERCENT = commissionPercent;
   const COMMISSION_RATE = COMMISSION_PERCENT / 100;
@@ -51,20 +53,15 @@ export default function GoldProfitCalculator({
   }, [price, buyPriceInput, sellPriceInput]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 shine-effect mt-4 space-y-4">
-      <div>
-        <div className="flex items-center gap-2 mb-2">
-          <CandlestickChart
-            size={24}
-            className={
-              assetKey === "usdt" ? "text-emerald-500" : "text-amber-500"
-            }
-          />
-          <h4 className="text-xl font-bold dark:text-white">
-            محاسبه سود خرید و فروش {assetLabel}
-          </h4>
-        </div>
-        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
+    <CollapsibleCard
+      title={`محاسبه سود خرید و فروش ${assetLabel}`}
+      icon={<CandlestickChart size={24} />}
+      isOpen={isOpen}
+      onToggle={() => setIsOpen(!isOpen)}
+      assetKey={assetKey}
+    >
+      <div className="text-right">
+        <p className="text-xs text-gray-600 dark:text-gray-300">
           در حالت سرمایه، مبلغ واردشده به‌عنوان پول واقعی سرمایه‌گذاری‌شده در
           نظر گرفته می‌شود و کارمزد خرید داخل آن لحاظ می‌شود.
         </p>
@@ -102,7 +99,7 @@ export default function GoldProfitCalculator({
         </div>
 
         {tradeMode === "gold" ? (
-          <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300 text-right">
             {assetKey === "usdt"
               ? "مقدار USDT خریداری‌شده"
               : "مقدار طلای خرید (میلی‌گرم)"}
@@ -113,13 +110,14 @@ export default function GoldProfitCalculator({
               onChange={(e) => setGoldAmountToTrade(e.target.value)}
               className={
                 assetKey === "usdt"
-                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-right"
               }
+              dir="rtl"
             />
           </label>
         ) : (
-          <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300 text-right">
             مبلغ سرمایه واردشده (تومان)
             <input
               type="number"
@@ -128,13 +126,14 @@ export default function GoldProfitCalculator({
               onChange={(e) => setTomanAmountToTrade(e.target.value)}
               className={
                 assetKey === "usdt"
-                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                  : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-right"
               }
+              dir="rtl"
             />
           </label>
         )}
-        <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+        <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300 text-right">
           قیمت خرید (تومان)
           <input
             type="number"
@@ -143,12 +142,13 @@ export default function GoldProfitCalculator({
             onChange={(e) => setBuyPriceInput(e.target.value)}
             className={
               assetKey === "usdt"
-                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-right"
             }
+            dir="rtl"
           />
         </label>
-        <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+        <label className="space-y-2 text-sm text-gray-700 dark:text-gray-300 text-right">
           قیمت فروش (تومان)
           <input
             type="number"
@@ -157,15 +157,16 @@ export default function GoldProfitCalculator({
             onChange={(e) => setSellPriceInput(e.target.value)}
             className={
               assetKey === "usdt"
-                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                ? "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right"
+                : "w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500 text-right"
             }
+            dir="rtl"
           />
         </label>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-right">
           <p className="text-xs text-gray-500 dark:text-gray-400">
             هزینه خرید + کارمزد
           </p>
@@ -173,7 +174,7 @@ export default function GoldProfitCalculator({
             {Math.round(netBuyCost).toLocaleString("fa-IR")} تومان
           </p>
         </div>
-        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-right">
           <p className="text-xs text-gray-500 dark:text-gray-400">
             درآمد فروش - کارمزد
           </p>
@@ -181,7 +182,7 @@ export default function GoldProfitCalculator({
             {Math.round(netSellRevenue).toLocaleString("fa-IR")} تومان
           </p>
         </div>
-        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-right">
           <p className="text-xs text-gray-500 dark:text-gray-400">سود خالص</p>
           <p
             className={`mt-2 font-semibold ${profitToman >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}
@@ -189,7 +190,7 @@ export default function GoldProfitCalculator({
             {Math.round(profitToman).toLocaleString("fa-IR")} تومان
           </p>
         </div>
-        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-right">
           <p className="text-xs text-gray-500 dark:text-gray-400">درصد سود</p>
           <p
             className={`mt-2 font-semibold ${profitPercent >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}`}
@@ -199,6 +200,6 @@ export default function GoldProfitCalculator({
           </p>
         </div>
       </div>
-    </div>
+    </CollapsibleCard>
   );
 }
