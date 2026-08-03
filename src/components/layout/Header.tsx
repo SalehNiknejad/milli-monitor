@@ -1,5 +1,5 @@
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Moon, Sun, Menu, X } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
 
 type Props = {
   onInstallStatusChange?: (status: string) => void;
@@ -7,6 +7,8 @@ type Props = {
   onInstallAvailableChange?: (available: boolean) => void;
   assetConfig?: any;
   isUsdtRoute?: boolean;
+  isCryptoRoute?: boolean;
+  currentRoute?: "gold" | "usdt" | "crypto";
 };
 
 declare global {
@@ -21,7 +23,21 @@ const Header: React.FC<Props> = ({
   onDarkModeChange,
   assetConfig,
   isUsdtRoute,
+  isCryptoRoute,
+  currentRoute,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   const [darkMode, setDarkMode] = useState(() => {
     try {
       return localStorage.getItem("milli:darkMode") === "true";
@@ -83,26 +99,75 @@ const Header: React.FC<Props> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="text-3xl">{assetConfig.icon}</div>
+            {!isCryptoRoute && <div className="text-3xl">{assetConfig.icon}</div>}
             <div>
               <h1
-                className={`text-2xl font-bold bg-gradient-to-r ${assetConfig.accent} bg-clip-text text-transparent`}
+                className={`text-2xl font-bold bg-gradient-to-r ${isCryptoRoute ? "from-indigo-500 to-purple-600" : assetConfig.accent} bg-clip-text text-transparent`}
               >
-                {assetConfig.title}
+                {isCryptoRoute ? "بازار کریپتو" : assetConfig.title}
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {assetConfig.subtitle}
+                {isCryptoRoute ? "Crypto Market" : assetConfig.subtitle}
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
-            <a
-              href={isUsdtRoute ? "/gold" : "/USDT"}
-              className={`px-3 py-2 rounded-lg text-sm font-medium border transition-colors ${assetConfig.pill}`}
-            >
-              {isUsdtRoute ? "ارزش طلا" : "ارزش تتر"}
-            </a>
+            {/* Desktop navigation: two buttons for the other pages */}
+            <nav className="hidden md:flex items-center gap-2">
+              {(["gold", "usdt", "crypto"] as const)
+                .filter((r) => r !== currentRoute)
+                .map((route) => (
+                  <a
+                    key={route}
+                    href={`/${route === "usdt" ? "USDT" : route}`}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      route === "gold"
+                        ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-200"
+                        : route === "usdt"
+                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-200"
+                        : "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-200"
+                    }`}
+                  >
+                    {route === "gold" ? "طلا" : route === "usdt" ? "تتر" : "کریپتو"}
+                  </a>
+                ))}
+            </nav>
+
+            {/* Mobile menu button */}
+            <div className="relative md:hidden" ref={menuRef}>
+              <button
+                onClick={() => setMenuOpen((prev) => !prev)}
+                className="p-2.5 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                {menuOpen ? (
+                  <X size={24} className="text-gray-700 dark:text-gray-200" />
+                ) : (
+                  <Menu size={24} className="text-gray-700 dark:text-gray-200" />
+                )}
+              </button>
+              {menuOpen && (
+                <div className="absolute left-0 top-full mt-2 w-44 rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50">
+                  {(["gold", "usdt", "crypto"] as const).map((route) => (
+                    <a
+                      key={route}
+                      href={`/${route === "usdt" ? "USDT" : route}`}
+                      className={`block px-4 py-3 text-sm font-medium transition-colors ${
+                        route === currentRoute
+                          ? "bg-gray-100 dark:bg-gray-700"
+                          : route === "gold"
+                          ? "text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/30"
+                          : route === "usdt"
+                          ? "text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
+                          : "text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                      }`}
+                    >
+                      {route === "gold" ? "طلا" : route === "usdt" ? "تتر" : "کریپتو"}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
             {deferredPrompt ? (
               <button
                 onClick={handleInstallApp}

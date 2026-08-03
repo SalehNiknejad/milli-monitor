@@ -11,6 +11,7 @@ import ProfitCalculator from "./components/ProfitCalculator";
 import WalletCalculator from "./components/WalletCalculator";
 import assetConfigs from "./configs/assetConfig";
 import HeartHint from "./components/HeartHint";
+import CryptoDashboard from "./components/CryptoDashboard";
 // import TransactionImporter from "./components/TransactionImporter";
 // import TransactionsTable from "./components/TransactionsTable";
 
@@ -19,9 +20,10 @@ import { useAssetPrice } from "./hooks/useAssetPrice";
 import { rialToToman } from "./utils/currency";
 
 function App() {
-  const isUsdtRoute =
-    typeof window !== "undefined" &&
-    window.location.pathname.toLowerCase().startsWith("/usdt");
+  const pathname =
+    typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/";
+  const isCryptoRoute = pathname.startsWith("/crypto");
+  const isUsdtRoute = !isCryptoRoute && pathname.startsWith("/usdt");
   const assetKey = isUsdtRoute ? "usdt" : "gold";
   const assetConfig = assetConfigs[assetKey];
   const [darkMode, setDarkMode] = useState(true);
@@ -153,11 +155,14 @@ function App() {
         onDarkModeChange={(value) => setDarkMode(value)}
         assetConfig={assetConfig}
         isUsdtRoute={isUsdtRoute}
+        isCryptoRoute={isCryptoRoute}
+        currentRoute={isCryptoRoute ? "crypto" : isUsdtRoute ? "usdt" : "gold"}
       />
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
-          {price && (
+          {isCryptoRoute && <CryptoDashboard />}
+          {!isCryptoRoute && price && (
             <PortfolioSummary
               currentPriceRial={price.price18}
               walletBalance={walletBalance}
@@ -170,7 +175,7 @@ function App() {
           )}
 
           {/* Price Display */}
-          {loading ? (
+          {!isCryptoRoute && (loading ? (
             <PriceCardLoading />
           ) : error ? (
             <PriceCardError error={error} />
@@ -191,43 +196,47 @@ function App() {
               />
               <AlertStatus alertPrice={alertPrice} isUsdtRoute={isUsdtRoute} />
             </div>
-          ) : null}
-          <HeartHint />
-          {assetKey === "gold" && (
-            <ProfitCalculator currentPrice={displayPrice} />
-          )}
-          {price && (
-            <GoldProfitCalculator
-              price={displayPrice}
-              assetKey={assetKey}
-              assetLabel={assetConfig.label}
-              commissionPercent={assetConfig.commission}
-            />
-          )}
-          <div className="grid grid-cols-1 gap-6">
-            {price && (
-              <WalletCalculator
-                price={displayPrice}
-                assetKey={assetKey}
-                assetLabel={assetConfig.label}
-                commissionPercent={assetConfig.commission}
-              />
-            )}
+          ) : null)}
+          {!isCryptoRoute && (
+            <>
+              <HeartHint />
+              {assetKey === "gold" && (
+                <ProfitCalculator currentPrice={displayPrice} />
+              )}
+              {price && (
+                <GoldProfitCalculator
+                  price={displayPrice}
+                  assetKey={assetKey}
+                  assetLabel={assetConfig.label}
+                  commissionPercent={assetConfig.commission}
+                />
+              )}
+              <div className="grid grid-cols-1 gap-6">
+                {price && (
+                  <WalletCalculator
+                    price={displayPrice}
+                    assetKey={assetKey}
+                    assetLabel={assetConfig.label}
+                    commissionPercent={assetConfig.commission}
+                  />
+                )}
 
-            {price && (
-              <PriceAlert
-                currentPrice={displayPrice}
-                alertPrice={alertPrice}
-                alertDirection={alertDirection}
-                assetKey={assetKey}
-                onSetAlert={(price, direction = "above") => {
-                  setAlertPrice(price);
-                  setAlertDirection(direction);
-                }}
-                onShowNotification={showNotification}
-              />
-            )}
-          </div>
+                {price && (
+                  <PriceAlert
+                    currentPrice={displayPrice}
+                    alertPrice={alertPrice}
+                    alertDirection={alertDirection}
+                    assetKey={assetKey}
+                    onSetAlert={(price, direction = "above") => {
+                      setAlertPrice(price);
+                      setAlertDirection(direction);
+                    }}
+                    onShowNotification={showNotification}
+                  />
+                )}
+              </div>
+            </>
+          )}
 
           {/* <TransactionsTable />
           <TransactionImporter /> */}
