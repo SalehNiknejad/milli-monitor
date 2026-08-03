@@ -12,6 +12,7 @@ import WalletCalculator from "./components/WalletCalculator";
 import assetConfigs from "./configs/assetConfig";
 import HeartHint from "./components/HeartHint";
 import CryptoDashboard from "./components/CryptoDashboard";
+import CoinDetailPage from "./components/CoinDetailPage";
 // import TransactionImporter from "./components/TransactionImporter";
 // import TransactionsTable from "./components/TransactionsTable";
 
@@ -20,11 +21,22 @@ import { useAssetPrice } from "./hooks/useAssetPrice";
 import { rialToToman } from "./utils/currency";
 
 function App() {
-  const pathname =
-    typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/";
-  const isCryptoRoute = pathname.startsWith("/crypto");
-  const isUsdtRoute = !isCryptoRoute && pathname.startsWith("/usdt");
-  const assetKey = isCryptoRoute ? "crypto" : isUsdtRoute ? "usdt" : "gold";
+  const [pathname, setPathname] = useState(
+    typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/",
+  );
+
+  useEffect(() => {
+    const handler = () => setPathname(window.location.pathname.toLowerCase());
+    window.addEventListener("popstate", handler);
+    return () => window.removeEventListener("popstate", handler);
+  }, []);
+
+  const cryptoDetailMatch = pathname.match(/^\/crypto\/(.+)$/);
+  const isCryptoDetail = !!cryptoDetailMatch;
+  const cryptoDetailId = cryptoDetailMatch?.[1] || null;
+  const isCryptoRoute = pathname.startsWith("/crypto") && !isCryptoDetail;
+  const isUsdtRoute = !isCryptoRoute && !isCryptoDetail && pathname.startsWith("/usdt");
+  const assetKey = isCryptoRoute || isCryptoDetail ? "crypto" : isUsdtRoute ? "usdt" : "gold";
   const assetConfig = assetConfigs[assetKey];
   const [darkMode, setDarkMode] = useState(true);
   const [installStatus, setInstallStatus] = useState("");
@@ -161,8 +173,17 @@ function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
+          {isCryptoDetail && cryptoDetailId && (
+            <CoinDetailPage
+              coinId={cryptoDetailId}
+              onBack={() => {
+                window.history.pushState(null, "", "/crypto");
+                window.dispatchEvent(new PopStateEvent("popstate"));
+              }}
+            />
+          )}
           {isCryptoRoute && <CryptoDashboard />}
-          {!isCryptoRoute && price && (
+          {!isCryptoRoute && !isCryptoDetail && price && (
             <PortfolioSummary
               currentPriceRial={price.price18}
               walletBalance={walletBalance}
@@ -175,7 +196,7 @@ function App() {
           )}
 
           {/* Price Display */}
-          {!isCryptoRoute && (loading ? (
+          {!isCryptoRoute && !isCryptoDetail && (loading ? (
             <PriceCardLoading />
           ) : error ? (
             <PriceCardError error={error} />
@@ -197,7 +218,7 @@ function App() {
               <AlertStatus alertPrice={alertPrice} isUsdtRoute={isUsdtRoute} />
             </div>
           ) : null)}
-          {!isCryptoRoute && (
+          {!isCryptoRoute && !isCryptoDetail && (
             <>
               <HeartHint />
               {assetKey === "gold" && (
