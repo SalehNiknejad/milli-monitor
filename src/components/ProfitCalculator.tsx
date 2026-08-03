@@ -112,7 +112,11 @@ export default function ProfitCalculator({
         </span>
       </div>
     </div>
-  ) : null;
+  ) : (
+    <div className="text-center text-gray-600 dark:text-gray-400 text-sm py-1">
+      برای مشاهده سود، خریدهای خود را وارد کنید
+    </div>
+  );
 
   return (
     <CollapsibleCard

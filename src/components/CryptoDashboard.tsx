@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchCryptoPrices, type CoinData } from "../services/cryptoApi";
 import CryptoCard from "./CryptoCard/CryptoCard";
+import HeartHint from "./HeartHint";
 
 export default function CryptoDashboard() {
   const [coins, setCoins] = useState<CoinData[]>([]);
@@ -29,6 +30,7 @@ export default function CryptoDashboard() {
 
   return (
     <div className="space-y-6">
+      <HeartHint />
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
         بازار ارزهای دیجیتال
       </h2>

@@ -59,14 +59,12 @@ export default function GoldProfitCalculator({
       isOpen={isOpen}
       onToggle={() => setIsOpen(!isOpen)}
       assetKey={assetKey}
+      preview={
+        <div className="text-center text-gray-600 dark:text-gray-400 text-sm py-1">
+          ماشین حساب سود خرید و فروش را باز کنید{" "}
+        </div>
+      }
     >
-      <div className="text-right">
-        <p className="text-xs text-gray-600 dark:text-gray-300">
-          در حالت سرمایه، مبلغ واردشده به‌عنوان پول واقعی سرمایه‌گذاری‌شده در
-          نظر گرفته می‌شود و کارمزد خرید داخل آن لحاظ می‌شود.
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div className="sm:col-span-3">
           <div className="flex flex-wrap gap-2 rounded-lg bg-gray-100 dark:bg-gray-700 p-1">
