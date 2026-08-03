@@ -99,15 +99,15 @@ const Header: React.FC<Props> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            {!isCryptoRoute && <div className="text-3xl">{assetConfig.icon}</div>}
+            <div className="text-3xl">{assetConfig.icon}</div>
             <div>
               <h1
-                className={`text-2xl font-bold bg-gradient-to-r ${isCryptoRoute ? "from-indigo-500 to-purple-600" : assetConfig.accent} bg-clip-text text-transparent`}
+                className={`text-2xl font-bold bg-gradient-to-r ${assetConfig.accent} bg-clip-text text-transparent`}
               >
-                {isCryptoRoute ? "بازار کریپتو" : assetConfig.title}
+                {assetConfig.title}
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {isCryptoRoute ? "Crypto Market" : assetConfig.subtitle}
+                {assetConfig.subtitle}
               </p>
             </div>
           </div>
@@ -125,11 +125,15 @@ const Header: React.FC<Props> = ({
                       route === "gold"
                         ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-200"
                         : route === "usdt"
-                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-200"
-                        : "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-200"
+                          ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-200"
+                          : "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-200"
                     }`}
                   >
-                    {route === "gold" ? "طلا" : route === "usdt" ? "تتر" : "کریپتو"}
+                    {route === "gold"
+                      ? "طلا"
+                      : route === "usdt"
+                        ? "تتر"
+                        : "کریپتو"}
                   </a>
                 ))}
             </nav>
@@ -143,7 +147,10 @@ const Header: React.FC<Props> = ({
                 {menuOpen ? (
                   <X size={24} className="text-gray-700 dark:text-gray-200" />
                 ) : (
-                  <Menu size={24} className="text-gray-700 dark:text-gray-200" />
+                  <Menu
+                    size={24}
+                    className="text-gray-700 dark:text-gray-200"
+                  />
                 )}
               </button>
               {menuOpen && (
@@ -157,16 +164,20 @@ const Header: React.FC<Props> = ({
                           ? route === "gold"
                             ? "bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 font-bold underline"
                             : route === "usdt"
-                            ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 font-bold underline"
-                            : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 font-bold underline"
+                              ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 font-bold underline"
+                              : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 font-bold underline"
                           : route === "gold"
-                          ? "bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50"
-                          : route === "usdt"
-                          ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
-                          : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50"
+                            ? "bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50"
+                            : route === "usdt"
+                              ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
+                              : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50"
                       }`}
                     >
-                      {route === "gold" ? "طلا" : route === "usdt" ? "تتر" : "کریپتو"}
+                      {route === "gold"
+                        ? "طلا"
+                        : route === "usdt"
+                          ? "تتر"
+                          : "کریپتو"}
                     </a>
                   ))}
                 </div>

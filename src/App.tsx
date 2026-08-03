@@ -24,7 +24,7 @@ function App() {
     typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/";
   const isCryptoRoute = pathname.startsWith("/crypto");
   const isUsdtRoute = !isCryptoRoute && pathname.startsWith("/usdt");
-  const assetKey = isUsdtRoute ? "usdt" : "gold";
+  const assetKey = isCryptoRoute ? "crypto" : isUsdtRoute ? "usdt" : "gold";
   const assetConfig = assetConfigs[assetKey];
   const [darkMode, setDarkMode] = useState(true);
   const [installStatus, setInstallStatus] = useState("");

@@ -6,7 +6,7 @@ interface PriceAlertProps {
   currentPrice: number;
   alertPrice: number | null;
   alertDirection: "above" | "below";
-  assetKey?: "gold" | "usdt";
+  assetKey?: "gold" | "usdt" | "crypto";
   onSetAlert: (price: number | null, direction?: "above" | "below") => void;
   onShowNotification: (title: string, body: string, emoji?: string) => void;
 }

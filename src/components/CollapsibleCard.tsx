@@ -9,7 +9,7 @@ interface CollapsibleCardProps {
   children: ReactNode;
   badge?: ReactNode;
   preview?: ReactNode;
-  assetKey?: "gold" | "usdt";
+  assetKey?: "gold" | "usdt" | "crypto";
 }
 
 export default function CollapsibleCard({
@@ -51,15 +51,15 @@ export default function CollapsibleCard({
             }`}
           />
           {badge && (
-            <div className="flex items-center gap-1 animate-pulse">
-              {badge}
-            </div>
+            <div className="flex items-center gap-1 animate-pulse">{badge}</div>
           )}
         </div>
         <div className="flex-1 text-right">
           <h3 className="text-lg font-bold dark:text-white">{title}</h3>
         </div>
-        <div className={`${accentClass} shrink-0 transition-colors duration-300`}>
+        <div
+          className={`${accentClass} shrink-0 transition-colors duration-300`}
+        >
           {icon}
         </div>
       </button>

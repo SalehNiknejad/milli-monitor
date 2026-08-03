@@ -5,7 +5,7 @@ import CollapsibleCard from "./CollapsibleCard";
 
 interface WalletCalculatorProps {
   price: number;
-  assetKey?: "gold" | "usdt";
+  assetKey?: "gold" | "usdt" | "crypto";
   assetLabel?: string;
   commissionPercent?: number;
 }

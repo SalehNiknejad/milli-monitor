@@ -6,7 +6,7 @@ interface PriceData {
 }
 
 interface Params {
-  assetKey: "gold" | "usdt";
+  assetKey: "gold" | "usdt" | "crypto";
   alertPrice: number | null;
   alertDirection: "above" | "below";
   showNotification: (title: string, body: string, emoji?: string) => void;
