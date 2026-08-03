@@ -154,12 +154,16 @@ const Header: React.FC<Props> = ({
                       href={`/${route === "usdt" ? "USDT" : route}`}
                       className={`block px-4 py-3 text-sm font-medium transition-colors ${
                         route === currentRoute
-                          ? "bg-gray-100 dark:bg-gray-700"
+                          ? route === "gold"
+                            ? "bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 font-bold underline"
+                            : route === "usdt"
+                            ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 font-bold underline"
+                            : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 font-bold underline"
                           : route === "gold"
-                          ? "text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/30"
+                          ? "bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900/50"
                           : route === "usdt"
-                          ? "text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30"
-                          : "text-indigo-700 dark:text-indigo-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                          ? "bg-emerald-50 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/50"
+                          : "bg-indigo-50 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50"
                       }`}
                     >
                       {route === "gold" ? "طلا" : route === "usdt" ? "تتر" : "کریپتو"}

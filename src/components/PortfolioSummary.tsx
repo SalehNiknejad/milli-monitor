@@ -73,9 +73,9 @@ export default function PortfolioSummary({
     {
       title: `موجودی ${assetLabel}`,
       value: totalGold,
-      icon: assetLabel === "طلا" ? Coins : DollarSign,
-      color: assetLabel === "طلا" ? "text-gold-500" : "text-emerald-500",
-      bg: assetLabel === "طلا" ? "bg-yellow-500/10" : "bg-emerald-500/10",
+      icon: assetLabel === "تتر" ? DollarSign : Coins,
+      color: assetLabel === "تتر" ? "text-emerald-500" : "text-gold-500",
+      bg: assetLabel === "تتر" ? "bg-emerald-500/10" : "bg-yellow-500/10",
       editable: true,
       key: "gold",
       onSave: handleGoldSave,

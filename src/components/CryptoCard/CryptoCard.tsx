@@ -1,4 +1,11 @@
-import { TrendingUp, TrendingDown, Activity, BarChart3, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  BarChart3,
+  ArrowUpRight,
+  ArrowDownRight,
+} from "lucide-react";
 import type { CoinData } from "../../services/cryptoApi";
 
 interface CryptoCardProps {
@@ -64,16 +71,26 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
         <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-2 min-w-0">
           <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-0.5">
             <Activity size={10} className="flex-shrink-0" />
-            <span className="truncate">24h Range</span>
+            <span className="truncate">بازه ۲۴ ساعته</span>
           </div>
           <div className="flex flex-col gap-0.5 text-gray-700 dark:text-gray-300 min-w-0">
             <div className="flex items-center gap-1 flex-wrap min-w-0">
-              <ArrowDownRight size={10} className="text-red-400 flex-shrink-0" />
-              <span className="truncate font-mono">${coin.low_24h.toLocaleString()}</span>
+              <ArrowDownRight
+                size={10}
+                className="text-red-400 flex-shrink-0"
+              />
+              <span className="truncate font-mono">
+                ${coin.low_24h.toLocaleString()}
+              </span>
             </div>
             <div className="flex items-center gap-1 flex-wrap min-w-0">
-              <ArrowUpRight size={10} className="text-emerald-400 flex-shrink-0" />
-              <span className="truncate font-mono">${coin.high_24h.toLocaleString()}</span>
+              <ArrowUpRight
+                size={10}
+                className="text-emerald-400 flex-shrink-0"
+              />
+              <span className="truncate font-mono">
+                ${coin.high_24h.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>
@@ -81,7 +98,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
         <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-2">
           <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-0.5">
             <BarChart3 size={10} />
-            <span>Market Cap</span>
+            <span>ارزش بازار</span>
           </div>
           <p className="text-gray-700 dark:text-gray-300 font-medium">
             {formatCompact(coin.market_cap)}
@@ -90,7 +107,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
 
         <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-2">
           <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-0.5">
-            <span>Volume 24h</span>
+            <span>حجم ۲۴ ساعته</span>
           </div>
           <p className="text-gray-700 dark:text-gray-300 font-medium">
             {formatCompact(coin.total_volume)}
@@ -99,7 +116,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
 
         <div className="rounded-lg bg-gray-50 dark:bg-gray-700/50 p-2">
           <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400 mb-0.5">
-            <span>Supply</span>
+            <span>عرضه</span>
           </div>
           <p className="text-gray-700 dark:text-gray-300 font-medium">
             {formatSupply(coin.circulating_supply)}
@@ -113,7 +130,7 @@ export default function CryptoCard({ coin }: CryptoCardProps) {
       </div>
 
       <div className="pt-2 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between text-[10px] text-gray-400">
-        <span>ATH: ${coin.ath.toLocaleString()}</span>
+        <span>بیشترین قیمت: ${coin.ath.toLocaleString()}</span>
         <span
           className={
             coin.ath_change_percentage >= 0
