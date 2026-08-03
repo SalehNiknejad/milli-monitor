@@ -45,6 +45,14 @@ export function useAssetPrice({
   }, [priceHistory]);
 
   useEffect(() => {
+    if (assetKey === "crypto") {
+      setPrice(null);
+      setPreviousPrice(null);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     let controller: AbortController | null = null;
 
     const fetchPrice = async () => {

@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
 import {
-  ArrowLeft,
-  ExternalLink,
-  TrendingUp,
-  TrendingDown,
   Activity,
+  ArrowLeft,
   BarChart3,
-  ArrowUpRight,
-  ArrowDownRight,
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  ExternalLink,
   Globe,
   Hash,
-  ThumbsUp,
-  ThumbsDown,
-  Calendar,
   Layers,
+  ThumbsUp,
+  TrendingDown,
+  TrendingUp,
 } from "lucide-react";
-import {
-  fetchCoinDetail,
-  type CoinDetailData,
-} from "../services/cryptoApi";
+import { useEffect, useRef, useState } from "react";
+import { fetchCoinDetail, type CoinDetailData } from "../services/cryptoApi";
 
 interface Props {
   coinId: string;
@@ -43,13 +39,58 @@ function ChangeBadge({ value, label }: { value: number; label: string }) {
   const isPos = value >= 0;
   return (
     <div className="flex flex-col items-center gap-1 rounded-xl bg-gray-50 dark:bg-gray-700/50 p-3">
-      <span className="text-[10px] text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="text-[10px] text-gray-500 dark:text-gray-400">
+        {label}
+      </span>
       <span
         className={`text-sm font-bold ${isPos ? "text-emerald-500" : "text-red-500"}`}
       >
         {isPos ? "+" : ""}
         {value.toFixed(2)}%
       </span>
+    </div>
+  );
+}
+
+function DescriptionBlock({ text, name }: { text: string; name: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const [isLong, setIsLong] = useState(false);
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      setIsLong(ref.current.scrollHeight > ref.current.clientHeight + 2);
+    }
+  }, [text]);
+
+  return (
+    <div className="rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+        درباره {name}
+      </h3>
+      <p
+        ref={ref}
+        dir="ltr"
+        className={`text-gray-600 dark:text-gray-300 leading-relaxed text-sm text-left transition-all duration-300 ${!expanded ? "line-clamp-4" : ""}`}
+      >
+        {text}
+      </p>
+      {isLong && (
+        <button
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-3 flex items-center gap-1 text-xs font-medium text-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+        >
+          {expanded ? (
+            <>
+              بستن <ChevronUp size={14} />
+            </>
+          ) : (
+            <>
+              ادامه مطلب <ChevronDown size={14} />
+            </>
+          )}
+        </button>
+      )}
     </div>
   );
 }
@@ -83,7 +124,9 @@ export default function CoinDetailPage({ coinId, onBack }: Props) {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-500 dark:text-gray-400 text-sm">در حال بارگذاری...</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            در حال بارگذاری...
+          </p>
         </div>
       </div>
     );
@@ -245,8 +288,12 @@ export default function CoinDetailPage({ coinId, onBack }: Props) {
           <div className="flex items-center gap-3">
             <div className="flex-1">
               <div className="flex justify-between text-xs mb-1">
-                <span className="text-emerald-500">مثبت {coin.sentiment_up}%</span>
-                <span className="text-red-500">منفی {coin.sentiment_down}%</span>
+                <span className="text-emerald-500">
+                  مثبت {coin.sentiment_up}%
+                </span>
+                <span className="text-red-500">
+                  منفی {coin.sentiment_down}%
+                </span>
               </div>
               <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden flex">
                 <div
@@ -293,14 +340,7 @@ export default function CoinDetailPage({ coinId, onBack }: Props) {
       </div>
 
       {coin.description && (
-        <div className="rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-            درباره {coin.name}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">
-            {coin.description}
-          </p>
-        </div>
+        <DescriptionBlock text={coin.description} name={coin.name} />
       )}
 
       {coin.categories.length > 0 && (
