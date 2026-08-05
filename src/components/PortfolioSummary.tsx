@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { formatToman } from "../utils/currency";
+import { PortfolioSummarySkeleton } from "./Skeleton/SkeletonLoader";
 
 interface Props {
   currentPriceRial: number;
@@ -19,6 +20,7 @@ interface Props {
   onGoldChange: (value: number) => void;
   assetLabel?: string;
   assetKey?: string;
+  loading?: boolean;
 }
 
 export default function PortfolioSummary({
@@ -28,7 +30,11 @@ export default function PortfolioSummary({
   onWalletChange,
   onGoldChange,
   assetLabel,
+  loading = false,
 }: Props) {
+  if (loading) {
+    return <PortfolioSummarySkeleton />;
+  }
   const [editingCard, setEditingCard] = useState<string | null>(null);
   const [walletInput, setWalletInput] = useState(walletBalance.toString());
   const [goldInput, setGoldInput] = useState(totalGold.toString());

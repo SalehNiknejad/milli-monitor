@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import GoldProfitCalculator from "./components/GoldProfitCalculator";
 import Header from "./components/layout/Header";
 import PortfolioSummary from "./components/PortfolioSummary";
@@ -19,36 +17,38 @@ import CoinDetailPage from "./components/CoinDetailPage";
 import { AlertStatus } from "./components/AlertStatus";
 import { useAssetPrice } from "./hooks/useAssetPrice";
 import { rialToToman } from "./utils/currency";
+import { useAppSettings } from "./hooks/useAppSettings";
+import { useAssetState } from "./hooks/useAssetState";
+import { useRouting } from "./hooks/useRouting";
+import { useToast } from "./hooks/useToast";
+import { ToastContainer } from "./components/Toast/ToastContainer";
 
 function App() {
-  const [pathname, setPathname] = useState(
-    typeof window !== "undefined" ? window.location.pathname.toLowerCase() : "/",
-  );
+  // Use custom hooks for state management
+  const {
+    pathname,
+    isCryptoRoute,
+    isCryptoDetail,
+    isUsdtRoute,
+    cryptoDetailId,
+    assetKey,
+    navigateTo,
+  } = useRouting();
+  const {
+    darkMode,
+    setDarkMode,
+    alertPrice,
+    setAlertPrice,
+    alertDirection,
+    setAlertDirection,
+    installStatus,
+    setInstallStatus,
+  } = useAppSettings();
+  const { walletBalance, setWalletBalance, assetHolding, setAssetHolding } =
+    useAssetState(assetKey);
+  const { toasts, showToast, removeToast } = useToast();
 
-  useEffect(() => {
-    const handler = () => setPathname(window.location.pathname.toLowerCase());
-    window.addEventListener("popstate", handler);
-    return () => window.removeEventListener("popstate", handler);
-  }, []);
-
-  const cryptoDetailMatch = pathname.match(/^\/crypto\/(.+)$/);
-  const isCryptoDetail = !!cryptoDetailMatch;
-  const cryptoDetailId = cryptoDetailMatch?.[1] || null;
-  const isCryptoRoute = pathname.startsWith("/crypto") && !isCryptoDetail;
-  const isUsdtRoute = !isCryptoRoute && !isCryptoDetail && pathname.startsWith("/usdt");
-  const assetKey = isCryptoRoute || isCryptoDetail ? "crypto" : isUsdtRoute ? "usdt" : "gold";
   const assetConfig = assetConfigs[assetKey];
-  const [darkMode, setDarkMode] = useState(true);
-  const [installStatus, setInstallStatus] = useState("");
-
-  const [alertPrice, setAlertPrice] = useState<number | null>(null);
-  const [alertDirection, setAlertDirection] = useState<"above" | "below">(
-    "above",
-  );
-  const [walletBalance, setWalletBalance] = useState<number>(0);
-  const [assetHolding, setAssetHolding] = useState<number>(0);
-  // const [notificationPermission, setNotificationPermission] =
-  //   useState<NotificationPermission>("default");
 
   const showNotification = (title: string, body: string, emoji?: string) => {
     if (
@@ -63,7 +63,8 @@ function App() {
       return;
     }
 
-    window.alert(`${emoji ? `${emoji} ` : ""}${title}\n${body}`);
+    // Show toast instead of alert
+    showToast(title, body, "info", emoji);
   };
 
   const { price, previousPrice, loading, error, priceHistory } = useAssetPrice({
@@ -72,80 +73,6 @@ function App() {
     alertDirection,
     showNotification,
   });
-
-  // Request notification permission on mount
-  // useEffect(() => {
-  //   if ("Notification" in window && Notification.permission === "default") {
-  //     Notification.requestPermission().then((permission) => {
-  //       setNotificationPermission(permission);
-  //     });
-  //   } else if ("Notification" in window) {
-  //     setNotificationPermission(Notification.permission);
-  //   }
-  // }, []);
-
-  // Load persisted settings (dark mode, alert price, price history, wallet and gold)
-  useEffect(() => {
-    try {
-      const storedDark = localStorage.getItem("milli:darkMode");
-      if (storedDark !== null) setDarkMode(storedDark === "true");
-
-      const storedAlert = localStorage.getItem("milli:alertPrice");
-      if (storedAlert !== null) setAlertPrice(Number(storedAlert));
-
-      const storedDirection = localStorage.getItem("milli:alertDirection");
-      if (storedDirection === "above" || storedDirection === "below") {
-        setAlertDirection(storedDirection);
-      }
-
-      const walletKey = `milli:walletBalance:${assetKey}`;
-      const storedWallet =
-        localStorage.getItem(walletKey) ??
-        localStorage.getItem("milli:walletBalance");
-      if (storedWallet !== null) setWalletBalance(Number(storedWallet));
-
-      const assetKeyName = `milli:assetHolding:${assetKey}`;
-      const storedAsset =
-        localStorage.getItem(assetKeyName) ??
-        localStorage.getItem("milli:totalGold");
-      if (storedAsset !== null) setAssetHolding(Number(storedAsset));
-    } catch (e) {
-      // ignore parse errors
-    }
-  }, [assetKey]);
-
-  // Persist small pieces of state
-
-  useEffect(() => {
-    try {
-      if (alertPrice === null) localStorage.removeItem("milli:alertPrice");
-      else localStorage.setItem("milli:alertPrice", String(alertPrice));
-    } catch (e) {}
-  }, [alertPrice, alertPrice, alertDirection]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("milli:alertDirection", alertDirection);
-    } catch (e) {}
-  }, [alertDirection]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        `milli:walletBalance:${assetKey}`,
-        String(walletBalance),
-      );
-    } catch (e) {}
-  }, [walletBalance, assetKey]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        `milli:assetHolding:${assetKey}`,
-        String(assetHolding),
-      );
-    } catch (e) {}
-  }, [assetHolding, assetKey]);
 
   const priceChange =
     price && previousPrice ? price.price18 - previousPrice : 0;
@@ -162,6 +89,8 @@ function App() {
     <div
       className={`min-h-screen transition-colors duration-300 ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50"}`}
     >
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+
       <Header
         onInstallStatusChange={(status) => setInstallStatus(status)}
         onDarkModeChange={(value) => setDarkMode(value)}
@@ -176,53 +105,59 @@ function App() {
           {isCryptoDetail && cryptoDetailId && (
             <CoinDetailPage
               coinId={cryptoDetailId}
-              onBack={() => {
-                window.history.pushState(null, "", "/crypto");
-                window.dispatchEvent(new PopStateEvent("popstate"));
-              }}
+              onBack={() => navigateTo("/crypto")}
             />
           )}
           {isCryptoRoute && <CryptoDashboard />}
-          {!isCryptoRoute && !isCryptoDetail && price && (
+          {!isCryptoRoute && !isCryptoDetail && (
             <PortfolioSummary
-              currentPriceRial={price.price18}
+              currentPriceRial={price?.price18 || 0}
               walletBalance={walletBalance}
               totalGold={assetHolding}
               onWalletChange={setWalletBalance}
               onGoldChange={setAssetHolding}
               assetLabel={assetConfig.label}
               assetKey={assetKey}
+              loading={loading}
             />
           )}
 
           {/* Price Display */}
-          {!isCryptoRoute && !isCryptoDetail && (loading ? (
-            <PriceCardLoading />
-          ) : error ? (
-            <PriceCardError error={error} />
-          ) : price ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <PriceCard
-                price={displayPrice}
-                date={price.date}
-                change={displayChange}
-                changePercent={parseFloat(priceChangePercent)}
-                isIncreasing={isIncreasing}
-                isDecreasing={isDecreasing}
-                assetLabel={assetConfig.shortLabel}
-                assetUnit="تومان"
-                assetAccent={assetConfig.accent}
-                assetIcon={assetConfig.icon}
-                assetKey={assetKey}
-              />
-              <AlertStatus alertPrice={alertPrice} isUsdtRoute={isUsdtRoute} />
-            </div>
-          ) : null)}
+          {!isCryptoRoute &&
+            !isCryptoDetail &&
+            (loading ? (
+              <PriceCardLoading />
+            ) : error ? (
+              <PriceCardError error={error} />
+            ) : price ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <PriceCard
+                  price={displayPrice}
+                  date={price.date}
+                  change={displayChange}
+                  changePercent={parseFloat(priceChangePercent)}
+                  isIncreasing={isIncreasing}
+                  isDecreasing={isDecreasing}
+                  assetLabel={assetConfig.shortLabel}
+                  assetUnit="تومان"
+                  assetAccent={assetConfig.accent}
+                  assetIcon={assetConfig.icon}
+                  assetKey={assetKey}
+                />
+                <AlertStatus
+                  alertPrice={alertPrice}
+                  isUsdtRoute={isUsdtRoute}
+                />
+              </div>
+            ) : null)}
           {!isCryptoRoute && !isCryptoDetail && (
             <>
               <HeartHint />
               {assetKey === "gold" && (
-                <ProfitCalculator currentPrice={displayPrice} />
+                <ProfitCalculator
+                  currentPrice={displayPrice}
+                  loading={loading}
+                />
               )}
               {price && (
                 <GoldProfitCalculator
@@ -230,6 +165,7 @@ function App() {
                   assetKey={assetKey}
                   assetLabel={assetConfig.label}
                   commissionPercent={assetConfig.commission}
+                  loading={loading}
                 />
               )}
               <div className="grid grid-cols-1 gap-6">
@@ -239,6 +175,7 @@ function App() {
                     assetKey={assetKey}
                     assetLabel={assetConfig.label}
                     commissionPercent={assetConfig.commission}
+                    loading={loading}
                   />
                 )}
 
@@ -253,6 +190,7 @@ function App() {
                       setAlertDirection(direction);
                     }}
                     onShowNotification={showNotification}
+                    loading={loading}
                   />
                 )}
               </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { TrendingUp, Plus, Trash2 } from "lucide-react";
 import CollapsibleCard from "./CollapsibleCard";
+import { CollapsibleCardSkeleton } from "./Skeleton/SkeletonLoader";
 
 interface Purchase {
   id: string;
@@ -10,11 +11,16 @@ interface Purchase {
 
 interface ProfitCalculatorProps {
   currentPrice: number;
+  loading?: boolean;
 }
 
 export default function ProfitCalculator({
   currentPrice,
+  loading = false,
 }: ProfitCalculatorProps) {
+  if (loading) {
+    return <CollapsibleCardSkeleton assetKey="gold" />;
+  }
   const [purchases, setPurchases] = useState<Purchase[]>(() => {
     try {
       const raw = localStorage.getItem("milli:purchases");

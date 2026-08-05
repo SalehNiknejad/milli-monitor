@@ -1,16 +1,11 @@
-import { Coins } from "lucide-react";
+import { PriceCardSkeleton } from "../Skeleton/SkeletonLoader";
 
 const PriceCardLoading: React.FC = () => {
   return (
-    <div className="flex items-center justify-center h-64">
-      <div className="text-center">
-        <div className="inline-block animate-spin">
-          <Coins size={48} className="text-gold-500 mb-4" />
-        </div>
-        <p className="text-gray-600 dark:text-gray-400">
-          در حال بارگذاری قیمت‌ها...
-        </p>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <PriceCardSkeleton />
+      <PriceCardSkeleton />
+      <PriceCardSkeleton />
     </div>
   );
 };

@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import { Wallet } from "lucide-react";
 import CollapsibleCard from "./CollapsibleCard";
+import { CollapsibleCardSkeleton } from "./Skeleton/SkeletonLoader";
 
 interface WalletCalculatorProps {
   price: number;
   assetKey?: "gold" | "usdt" | "crypto";
   assetLabel?: string;
   commissionPercent?: number;
+  loading?: boolean;
 }
 
 export default function WalletCalculator({
@@ -15,7 +17,11 @@ export default function WalletCalculator({
   assetKey = "gold",
   assetLabel = "طلا",
   commissionPercent = 0.5,
+  loading = false,
 }: WalletCalculatorProps) {
+  if (loading) {
+    return <CollapsibleCardSkeleton assetKey={assetKey} />;
+  }
   const [balance, setBalance] = useState<string>(() => {
     try {
       const raw =

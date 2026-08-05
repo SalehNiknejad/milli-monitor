@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Bell, X } from "lucide-react";
 import CollapsibleCard from "./CollapsibleCard";
+import { CollapsibleCardSkeleton } from "./Skeleton/SkeletonLoader";
 
 interface PriceAlertProps {
   currentPrice: number;
@@ -9,6 +10,7 @@ interface PriceAlertProps {
   assetKey?: "gold" | "usdt" | "crypto";
   onSetAlert: (price: number | null, direction?: "above" | "below") => void;
   onShowNotification: (title: string, body: string, emoji?: string) => void;
+  loading?: boolean;
 }
 
 export default function PriceAlert({
@@ -18,7 +20,11 @@ export default function PriceAlert({
   assetKey = "gold",
   onSetAlert,
   onShowNotification,
+  loading = false,
 }: PriceAlertProps) {
+  if (loading) {
+    return <CollapsibleCardSkeleton assetKey={assetKey} />;
+  }
   const [inputPrice, setInputPrice] = useState<string>("");
   const [showForm, setShowForm] = useState(false);
   const [selectedDirection, setSelectedDirection] = useState<"above" | "below">(

@@ -1,12 +1,14 @@
 import { CandlestickChart } from "lucide-react";
 import { useEffect, useState } from "react";
 import CollapsibleCard from "./CollapsibleCard";
+import { CollapsibleCardSkeleton } from "./Skeleton/SkeletonLoader";
 
 interface GoldProfitCalculatorProps {
   price: number;
   assetKey?: "gold" | "usdt" | "crypto";
   assetLabel?: string;
   commissionPercent?: number;
+  loading?: boolean;
 }
 
 export default function GoldProfitCalculator({
@@ -14,7 +16,11 @@ export default function GoldProfitCalculator({
   assetKey = "gold",
   assetLabel = "طلا",
   commissionPercent = 0.5,
+  loading = false,
 }: GoldProfitCalculatorProps) {
+  if (loading) {
+    return <CollapsibleCardSkeleton assetKey={assetKey} />;
+  }
   const [tradeMode, setTradeMode] = useState<"gold" | "toman">("gold");
   const [goldAmountToTrade, setGoldAmountToTrade] = useState<string>("10");
   const [tomanAmountToTrade, setTomanAmountToTrade] =
