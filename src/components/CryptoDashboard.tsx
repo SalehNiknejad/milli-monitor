@@ -4,6 +4,7 @@ import { fetchCryptoPrices, type CoinData } from "../services/cryptoApi";
 import CryptoCard from "./CryptoCard/CryptoCard";
 import CryptoSearchModal from "./CryptoSearchModal";
 import HeartHint from "./HeartHint";
+import { CryptoDashboardSkeleton } from "./Skeleton/SkeletonLoader";
 
 export default function CryptoDashboard() {
   const [coins, setCoins] = useState<CoinData[]>([]);
@@ -28,6 +29,10 @@ export default function CryptoDashboard() {
       mounted = false;
     };
   }, []);
+
+  if (loading) {
+    return <CryptoDashboardSkeleton />;
+  }
 
   const handleNavigate = (coinId: string) => {
     window.history.pushState(null, "", `/crypto/${coinId}`);
