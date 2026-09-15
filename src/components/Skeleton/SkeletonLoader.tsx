@@ -20,13 +20,65 @@ export function SkeletonLoader({
 
 export function PriceCardSkeleton() {
   return (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-md space-y-4 animate-pulse">
-      <SkeletonLoader width="w-1/2" height="h-6" />
-      <div className="space-y-2">
-        <SkeletonLoader height="h-8" />
-        <SkeletonLoader width="w-2/3" height="h-4" />
+    <div className="md:col-span-2">
+      <div className="relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-200/40 via-transparent to-gray-300/20 dark:from-gray-700/40 dark:to-gray-600/20" />
+
+        <div className="relative p-8 space-y-6 animate-pulse">
+          {/* Header */}
+          <div className="flex items-start justify-between">
+            <div className="space-y-3 flex-1">
+              <SkeletonLoader width="w-28" height="h-4" />
+
+              <div className="flex items-end gap-3 flex-wrap">
+                <SkeletonLoader
+                  width="w-56 sm:w-72"
+                  height="h-14 sm:h-16"
+                  className="rounded-xl"
+                />
+                <SkeletonLoader width="w-16" height="h-5" />
+              </div>
+            </div>
+
+            <SkeletonLoader
+              width="w-16 sm:w-20"
+              height="h-16 sm:h-20"
+              className="rounded-full"
+            />
+          </div>
+
+          {/* Change badge */}
+          <div className="flex items-center gap-4">
+            <div className="rounded-md border border-gray-200 dark:border-gray-700 px-4 py-2 bg-gray-50 dark:bg-gray-700/40 w-full max-w-xs">
+              <div className="flex items-center gap-2">
+                <SkeletonLoader
+                  width="w-5"
+                  height="h-5"
+                  className="rounded-full"
+                />
+                <SkeletonLoader width="w-32" height="h-5" />
+              </div>
+              <div className="mt-2">
+                <SkeletonLoader width="w-20" height="h-3" />
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
+            <SkeletonLoader width="w-56 sm:w-72" height="h-4" />
+
+            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 dark:border-gray-700 px-3 py-1.5 bg-gray-50 dark:bg-gray-700/40">
+              <SkeletonLoader
+                width="w-3"
+                height="h-3"
+                className="rounded-full"
+              />
+              <SkeletonLoader width="w-40 sm:w-52" height="h-3" />
+            </div>
+          </div>
+        </div>
       </div>
-      <SkeletonLoader height="h-3" width="w-1/3" />
     </div>
   );
 }
@@ -216,6 +268,32 @@ export function CoinDetailPageSkeleton() {
         <SkeletonLoader height="h-4" width="w-full" />
         <SkeletonLoader height="h-4" width="w-3/4" />
       </div>
+    </div>
+  );
+}
+
+export function AlertStatusSkeleton({ isUsdtRoute = false }: { isUsdtRoute?: boolean } = {}) {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-gray-700 animate-pulse">
+      {/* Header */}
+      <div className="flex items-center gap-2 mb-6">
+        <SkeletonLoader height="h-10" width="w-10" className="rounded-lg" />
+        <SkeletonLoader height="h-6" width="w-32" />
+      </div>
+
+      {/* Direction Badge */}
+      <div className="mb-4">
+        <SkeletonLoader height="h-6" width="w-24" className="rounded-lg" />
+      </div>
+
+      {/* Price Display */}
+      <div className="mb-4">
+        <SkeletonLoader height="h-4" width="w-20" className="mb-2" />
+        <SkeletonLoader height="h-10" width="w-48" />
+      </div>
+
+      {/* Status */}
+      <SkeletonLoader height="h-12" width="w-full" className="rounded-lg" />
     </div>
   );
 }

@@ -11,6 +11,11 @@ export default defineConfig({
         target: "http://localhost:3001",
         changeOrigin: true,
       },
+      "/api/global-gold": {
+        target: "https://api.goldprice.dev",
+        changeOrigin: true,
+        rewrite: () => "/v1/prices?symbol=XAU-USD-SPOT",
+      },
       "/api": {
         target: "https://milli.gold",
         changeOrigin: true,

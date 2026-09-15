@@ -5,6 +5,11 @@ interface PriceData {
   date: string;
 }
 
+interface GlobalGoldPrice {
+  price: number;
+  date: string;
+}
+
 interface Params {
   assetKey: "gold" | "usdt" | "crypto";
   alertPrice: number | null;
@@ -14,6 +19,7 @@ interface Params {
 
 const GOLD_API_URL = "/api/v1/public/milli-price/detail";
 const USDT_API_URL = "/api/usdt";
+const GLOBAL_GOLD_API_URL = "/api/global-gold";
 
 export function useAssetPrice({
   assetKey,
@@ -26,6 +32,12 @@ export function useAssetPrice({
   const [previousPrice, setPreviousPrice] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [globalGoldPrice, setGlobalGoldPrice] =
+    useState<GlobalGoldPrice | null>(null);
+  const [globalGoldLoading, setGlobalGoldLoading] = useState(
+    assetKey === "gold",
+  );
+  const [globalGoldError, setGlobalGoldError] = useState<string | null>(null);
   const intervalT = Number(import.meta.env.VITE_PRICE_INTERVAL) || 30000;
   const lastPriceRef = useRef<number | null>(null);
   const [priceHistory, setPriceHistory] = useState<number[]>(() => {
@@ -43,6 +55,57 @@ export function useAssetPrice({
       localStorage.setItem("milli:priceHistory", JSON.stringify(priceHistory));
     } catch {}
   }, [priceHistory]);
+
+  useEffect(() => {
+    if (assetKey !== "gold") {
+      setGlobalGoldPrice(null);
+      setGlobalGoldLoading(false);
+      setGlobalGoldError(null);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchGlobalGoldPrice = async () => {
+      setGlobalGoldLoading(true);
+
+      try {
+        const response = await fetch(GLOBAL_GOLD_API_URL, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const data = await response.json();
+        const symbol = data?.symbols?.[0];
+        const newPrice = Number(symbol?.price);
+
+        if (!symbol || !Number.isFinite(newPrice)) {
+          throw new Error("invalid global gold response");
+        }
+
+        setGlobalGoldPrice({
+          price: newPrice,
+          date: symbol.computed_at || new Date().toISOString(),
+        });
+        setGlobalGoldError(null);
+      } catch (e: any) {
+        if (e.name === "AbortError") return;
+        setGlobalGoldError("خطا در دریافت انس جهانی");
+      } finally {
+        if (!controller.signal.aborted) setGlobalGoldLoading(false);
+      }
+    };
+
+    fetchGlobalGoldPrice();
+    const interval = setInterval(fetchGlobalGoldPrice, intervalT);
+
+    return () => {
+      clearInterval(interval);
+      controller.abort();
+    };
+  }, [assetKey, intervalT]);
 
   useEffect(() => {
     if (assetKey === "crypto") {
@@ -146,5 +209,8 @@ export function useAssetPrice({
     loading,
     error,
     priceHistory,
+    globalGoldPrice,
+    globalGoldLoading,
+    globalGoldError,
   };
 }

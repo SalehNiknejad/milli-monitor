@@ -67,7 +67,15 @@ function App() {
     showToast(title, body, "info", emoji);
   };
 
-  const { price, previousPrice, loading, error, priceHistory } = useAssetPrice({
+  const {
+    price,
+    previousPrice,
+    loading,
+    error,
+    globalGoldPrice,
+    globalGoldLoading,
+    globalGoldError,
+  } = useAssetPrice({
     assetKey,
     alertPrice,
     alertDirection,
@@ -143,10 +151,15 @@ function App() {
                   assetAccent={assetConfig.accent}
                   assetIcon={assetConfig.icon}
                   assetKey={assetKey}
+                  globalGoldPrice={globalGoldPrice?.price}
+                  globalGoldLoading={globalGoldLoading}
+                  globalGoldError={globalGoldError}
                 />
                 <AlertStatus
                   alertPrice={alertPrice}
+                  alertDirection={alertDirection}
                   isUsdtRoute={isUsdtRoute}
+                  loading={loading}
                 />
               </div>
             ) : null)}

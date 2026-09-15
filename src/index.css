@@ -22,6 +22,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.font-vazir {
+  font-family: 'Vazirmatn', sans-serif;
+}
+
 .gold-gradient {
   background: linear-gradient(135deg, #d4a54a 0%, #b8882a 100%);
 }

@@ -5,6 +5,10 @@
             "destination": "https://apiv2.nobitex.ir/market/stats?srcCurrency=usdt"
         },
         {
+            "source": "/api/global-gold",
+            "destination": "https://api.goldprice.dev/v1/prices?symbol=XAU-USD-SPOT"
+        },
+        {
             "source": "/api/:path*",
             "destination": "https://milli.gold/api/:path*"
         },
