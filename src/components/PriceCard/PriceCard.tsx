@@ -114,37 +114,6 @@ export default function PriceCard({
             <div className="text-5xl">{assetIcon}</div>
           </div>
 
-          {assetKey === "gold" && (
-            <div className="flex items-center justify-between gap-4 rounded-xl border border-amber-200/70 bg-amber-50/70 px-4 py-3 dark:border-amber-900/50 dark:bg-amber-950/20">
-              <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                  انس جهانی طلا
-                </p>
-                {globalGoldLoading ? (
-                  <div className="font-vazir mt-1 flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
-                    <Loader2 size={15} className="animate-spin" />
-                    در حال دریافت...
-                  </div>
-                ) : globalGoldError ? (
-                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-                    {globalGoldError}
-                  </p>
-                ) : (
-                  <p className="mt-1 text-xl font-bold text-amber-700 dark:text-amber-300">
-                    {globalGoldPrice?.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    دلار
-                  </p>
-                )}
-              </div>
-              <span className="text-2xl" aria-hidden="true">
-                ◌
-              </span>
-            </div>
-          )}
-
           {/* Change indicator */}
           <div className="flex items-center gap-4">
             <div className="relative inline-block">
@@ -173,6 +142,36 @@ export default function PriceCard({
               </div>
             </div>
           </div>
+          {assetKey === "gold" && (
+            <div className="flex items-center justify-between gap-4 rounded-xl border border-amber-200/70 bg-amber-50/70 px-4 py-3 dark:border-amber-400/20 dark:bg-amber-500/5">
+              <div>
+                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                  انس جهانی طلا
+                </p>
+                {globalGoldLoading ? (
+                  <div className="font-vazir mt-1 flex items-center gap-2 text-xl text-gray-400 dark:text-gray-500">
+                    <Loader2 size={15} className="animate-spin" />
+                    در حال دریافت...
+                  </div>
+                ) : globalGoldError ? (
+                  <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                    {globalGoldError}
+                  </p>
+                ) : (
+                  <p className="mt-1 text-xl font-bold text-amber-700 dark:text-amber-300">
+                    {globalGoldPrice?.toLocaleString("fa-IR", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    دلار
+                  </p>
+                )}
+              </div>
+              <span className="text-2xl" aria-hidden="true">
+                ◌
+              </span>
+            </div>
+          )}
 
           {/* Date and time */}
           <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
